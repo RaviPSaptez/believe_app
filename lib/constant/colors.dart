@@ -33,13 +33,15 @@ const Color black= Color(0xff000000);
 const Color white= Color(0xffffffff);
 const Color grayNormal = Color(0xffD3DADC);
 const Color grayLight= Color(0xffe0e0e0);
-const Color graySemiDark= Color(0xff9F9F9F);
+const Color graySemiDark= Color(0xff666666);
 const Color grayDark= Color(0xff72716d);
 const Color button_bg= Color(0xff003531);
 const Color orange= Color(0xffF78D28);
 const Color blueNormal = Color(0xff0087FF);
 const Color blueDark = Color(0xff0480EE);
-
-
+const Color assignBg= Color(0xffECF6FF);
+const Color assignText = Color(0xff0087FF);
+const Color editTextBorder = Color(0xff7E7E7E);
+const Color editTextColor = Color(0xff666666);
 
 

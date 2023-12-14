@@ -1,11 +1,11 @@
-import 'package:believe_app/pages/login_with_mobile_screen.dart';
+import 'package:believe_app/pages/login/login_with_mobile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import '../constant/colors.dart';
-import '../utils/app_utils.dart';
-import '../utils/base_class.dart';
-import '../utils/session_manager.dart';
+import '../../constant/colors.dart';
+import '../../utils/app_utils.dart';
+import '../../utils/base_class.dart';
+import '../../utils/session_manager.dart';
 import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {

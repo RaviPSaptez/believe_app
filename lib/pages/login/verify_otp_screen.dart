@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:believe_app/pages/my_task_list_screen.dart';
+import 'package:believe_app/pages/task/my_task_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pretty_http_logger/pretty_http_logger.dart';
-import '../constant/api_end_point.dart';
-import '../constant/colors.dart';
-import '../model/SendOTPResponseModel.dart';
-import '../model/VerifyOTPResponseModel.dart';
-import '../utils/app_utils.dart';
-import '../utils/base_class.dart';
+import '../../constant/api_end_point.dart';
+import '../../constant/colors.dart';
+import '../../model/login/SendOTPResponseModel.dart';
+import '../../model/login/VerifyOtpResponseModel.dart';
+import '../../utils/app_utils.dart';
+import '../../utils/base_class.dart';
 
 class VerifyOTPScreen extends StatefulWidget {
   String mobileNumber;

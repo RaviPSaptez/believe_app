@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import '../constant/colors.dart';
 
 class MyNoDataWidget extends StatelessWidget {
@@ -20,7 +21,8 @@ class MyNoDataWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/ic_login_logo.png', height: 120, width: 180),
+            Image.asset('assets/images/ic_only_icon.png', height: 56, width: 56,fit : BoxFit.fitWidth,alignment: Alignment.center,),
+            const Gap(15),
             Visibility(
               visible: msg.isNotEmpty,
               child: Text(

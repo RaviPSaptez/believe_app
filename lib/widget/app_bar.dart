@@ -21,7 +21,7 @@ class AppBarWidget extends StatelessWidget {
                 decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueDark),
                 height: 42,
                 width: 42,
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(13),
                 child: Image.asset('assets/images/ic_back_arrow.png', height: 28, width: 28)),
           ),
           const Gap(12),
@@ -31,7 +31,18 @@ class AppBarWidget extends StatelessWidget {
               textAlign: TextAlign.start,
               style: titleFontNormal(white,20),
             ),
-          )
+          ),
+          GestureDetector(
+            onTap: (){
+              // Navigator.pop(context);
+            },
+            child: Container(
+                decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueDark),
+                height: 42,
+                width: 42,
+                padding: const EdgeInsets.all(13),
+                child: Image.asset('assets/images/ic_add.png', height: 28, width: 28)),
+          ),
         ],
       ),
     );

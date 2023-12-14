@@ -1,6 +1,7 @@
-import 'package:believe_app/model/VerifyOTPResponseModel.dart';
 import 'package:believe_app/utils/app_utils.dart';
 import 'package:believe_app/utils/session_manager_new.dart';
+
+import '../model/login/VerifyOtpResponseModel.dart';
 
 class SessionManager {
   final String isLoggedIn = "isLoggedIn";
@@ -15,6 +16,7 @@ class SessionManager {
   final String isActive = "is_active";
   final String deviceToken = "deviceToken";
   final String accessToken = "access_token";
+  final String hodLogin = "hod_login";
 
   Future createLoginSession(Data? data) async {
     await SessionManagerNew.setBool(isLoggedIn, true);
@@ -27,6 +29,7 @@ class SessionManager {
     await SessionManagerNew.setString(emailAddress, checkValidString(data?.emailAddress));
     await SessionManagerNew.setString(contactNo, checkValidString(data?.contactNo));
     await SessionManagerNew.setString(isActive, checkValidString(data?.isActive));
+    await SessionManagerNew.setString(hodLogin, checkValidString(data?.hod));
   }
 
   Future<void> setIsLoggedIn(bool isLoginIn)
@@ -49,5 +52,9 @@ class SessionManager {
 
   String? getId() {
     return SessionManagerNew.getString(id);
+  }
+
+  String? getIsHOD() {
+    return SessionManagerNew.getString(hodLogin);
   }
 }

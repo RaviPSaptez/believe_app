@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:believe_app/pages/login_with_mobile_screen.dart';
-import 'package:believe_app/pages/my_task_list_screen.dart';
+import 'package:believe_app/pages/login/login_with_mobile_screen.dart';
+import 'package:believe_app/pages/task/my_task_list_screen.dart';
 import 'package:believe_app/utils/TextChanger.dart';
 import 'package:believe_app/utils/app_utils.dart';
 import 'package:believe_app/utils/session_manager.dart';

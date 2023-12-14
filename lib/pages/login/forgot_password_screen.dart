@@ -1,34 +1,28 @@
-import 'dart:convert';
-import 'package:believe_app/pages/verify_otp_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import 'package:pretty_http_logger/pretty_http_logger.dart';
-import '../constant/api_end_point.dart';
-import '../constant/colors.dart';
-import '../model/SendOTPResponseModel.dart';
-import '../utils/app_utils.dart';
-import '../utils/base_class.dart';
+import '../../constant/colors.dart';
+import '../../utils/app_utils.dart';
+import '../../utils/base_class.dart';
 
-class LoginWithMobileScreen extends StatefulWidget {
-  const LoginWithMobileScreen({Key? key}) : super(key: key);
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginWithMobileScreen createState() => _LoginWithMobileScreen();
+  _ForgotPasswordScreen createState() => _ForgotPasswordScreen();
 }
 
-class _LoginWithMobileScreen extends BaseState<LoginWithMobileScreen> {
-  bool _isLoading = false;
-  final TextEditingController _mobileController = TextEditingController();
+class _ForgotPasswordScreen extends BaseState<ForgotPasswordScreen> {
+  final bool _isLoading = false;
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: button_bg,
-      statusBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light, // For Android (dark icons)
       statusBarBrightness: Brightness.light,
     ));
-
     return Scaffold(
         backgroundColor: button_bg,
         resizeToAvoidBottomInset: false,
@@ -57,27 +51,24 @@ class _LoginWithMobileScreen extends BaseState<LoginWithMobileScreen> {
                         children: [
                           Image.asset('assets/images/ic_login_logo.png', height: 120, width: 180),
                           Text(
-                            "Log In With Mobile",
+                            "Forgot Password",
                             textAlign: TextAlign.start,
                             style: titleFontLarge(black),
                           ),
                           const Gap(10),
                           const Text(
-                            "Please enter mobile number to login.",
+                            "Please enter email address to forgot your password.",
                             textAlign: TextAlign.start,
                             style: TextStyle(fontSize: 18, fontFamily: otherFont,color: black, fontWeight: FontWeight.w500),
                           ),
                           const Gap(30),
                           TextField(
-                            controller: _mobileController,
                             cursorColor: black,
-                            maxLength: 10,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
                             style: editTextStyle(),
                             decoration: const InputDecoration(
-                              hintText: 'Mobile Number',
-                              counterText: '',
+                              hintText: 'Email',
                             ),
                           ),
                         ],
@@ -97,16 +88,13 @@ class _LoginWithMobileScreen extends BaseState<LoginWithMobileScreen> {
                               FocusScope.of(context).requestFocus(FocusNode());
                               if (!_isLoading) {
                                 FocusScope.of(context).requestFocus(FocusNode());
-                                String mobileNumber = _mobileController.text.toString().trim();
-                                if (mobileNumber.isEmpty) {
+                                String email = _emailController.text.toString().trim();
+                                if (email.isEmpty) {
                                   showSnackBar("Please enter a mobile number", context);
-                                }  else if (mobileNumber.toString().trim().length !=10) {
-                                  showSnackBar("Please enter a valid mobile number", context);
                                 }
                                 else {
                                   if (isOnline) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
-                                    _getOTPFromAPI(mobileNumber.toString().trim());
+                                    Navigator.pop(context);
                                   } else {
                                     noInterNet(context);
                                   }
@@ -119,7 +107,7 @@ class _LoginWithMobileScreen extends BaseState<LoginWithMobileScreen> {
                               padding: const EdgeInsets.only(top: 8, bottom: 8),
                               child: !_isLoading
                                   ? const Text(
-                                "Get OTP",
+                                "Forgot Password",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 18, fontFamily: otherFont,color: white, fontWeight: FontWeight.w600),
                               )
@@ -156,8 +144,8 @@ class _LoginWithMobileScreen extends BaseState<LoginWithMobileScreen> {
                           Navigator.pop(context);
                         },
                         child: const Text(
-                          'Login With Email?',
-                          style: TextStyle(fontSize: 16, fontFamily: otherFont,color: button_bg, fontWeight: FontWeight.w600,
+                          'Back to Login Page?',
+                          style: TextStyle(fontSize: 16,fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w600,
                             decoration: TextDecoration.underline,),
                         ),
                       ),
@@ -171,73 +159,9 @@ class _LoginWithMobileScreen extends BaseState<LoginWithMobileScreen> {
         ));
   }
 
-  _getOTPFromAPI(String mobileNumber) async {
-    if(isOnline)
-    {
-      setState(() {
-        _isLoading = true;
-      });
-      HttpWithMiddleware http = HttpWithMiddleware.build(middlewares: [
-        HttpLogger(logLevel: LogLevel.BODY),
-      ]);
-
-      final url = Uri.parse(API_URL + login);
-      Map<String, String> jsonBody = {
-        'contact_no': COUNTRY_CODE + mobileNumber.toString().trim(),
-        'call_app': CALL_APP,
-        'from_app': IS_FROM_APP};
-
-      final response = await http.post(url, body: jsonBody, headers: {
-        "Authorization": API_Token,
-      });
-
-      final statusCode = response.statusCode;
-      final body = response.body;
-      Map<String, dynamic> user = jsonDecode(body);
-      var dataResponse = SendOtpResponseModel.fromJson(user);
-      if (statusCode == 200 && dataResponse.success == 1)
-      {
-        try
-        {
-          String userId = checkValidString(dataResponse.userId);
-          if(userId.isNotEmpty)
-          {
-             openNextPage(mobileNumber,userId);
-          }
-          else
-          {
-              showToast("User id not found", context);
-          }
-        }
-        catch (e)
-        {
-          print(e);
-        }
-        setState(()
-        {
-          _isLoading = false;
-        });
-      } else {
-        showSnackBar(dataResponse.message, context);
-        setState(()
-        {
-          _isLoading = false;
-        });
-      }
-    }
-    else
-    {
-      noInterNet(context);
-    }
-  }
-
-  void openNextPage(String mobileNumber,String userId) {
-    startActivity(context, VerifyOTPScreen(mobileNumber,userId));
-  }
-
   @override
   void castStatefulWidget() {
-    widget is LoginWithMobileScreen;
+    widget is ForgotPasswordScreen;
   }
 
 }

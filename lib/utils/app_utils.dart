@@ -144,44 +144,62 @@ titleFontNormal(Color colorValue,double fontSize) {
   return TextStyle(fontSize: fontSize, fontFamily: titleFont, color: colorValue, fontWeight: FontWeight.w800);
 }
 
-font12(){
-  return const TextStyle(fontSize: 12, fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w400);
+font12(Color colorValue){
+  return TextStyle(fontSize: 12, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w400);
 }
 
-font13(){
-  return const TextStyle(fontSize: 13, fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w400);
+font13(Color colorValue){
+  return TextStyle(fontSize: 13, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w400);
 }
 
-font14(){
-  return const TextStyle(fontSize: 14, fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w500);
+font14(Color colorValue){
+  return  TextStyle(fontSize: 14, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w500);
 }
 
-font15(){
-  return const TextStyle(fontSize: 14, fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w500);
+font15(Color colorValue){
+  return TextStyle(fontSize: 16, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w400);
 }
 
-font16(){
-  return const TextStyle(fontSize: 16, fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w500);
+font16(Color colorValue){
+  return TextStyle(fontSize: 16, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w500);
 }
 
-font17(){
-  return const TextStyle(fontSize: 17, fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w600);
+font16SemiBold(Color colorValue){
+  return TextStyle(fontSize: 16, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w600);
 }
 
-font18(){
-  return const TextStyle(fontSize: 18, fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w600);
+
+font18SemiBold(Color colorValue){
+  return TextStyle(fontSize: 18, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w500);
 }
 
-font19(){
-  return const TextStyle(fontSize: 19, fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w600);
+
+font17(Color colorValue){
+  return TextStyle(fontSize: 17, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w600);
 }
 
-font20(){
-  return const TextStyle(fontSize: 20, fontFamily: otherFont, color: button_bg, fontWeight: FontWeight.w600);
+font18(Color colorValue){
+  return  TextStyle(fontSize: 18, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w600);
+}
+
+font19(Color colorValue){
+  return  TextStyle(fontSize: 19, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w600);
+}
+
+font20(Color colorValue){
+  return  TextStyle(fontSize: 20, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w600);
+}
+
+font22(Color colorValue){
+  return  TextStyle(fontSize: 20, fontFamily: otherFont, color: colorValue, fontWeight: FontWeight.w700);
 }
 
 editTextStyle() {
   return TextStyle(fontWeight: FontWeight.w500, color: black, fontSize: textFiledSize);
+}
+
+editTextStyleAll() {
+  return TextStyle(fontWeight: FontWeight.w500, fontFamily: otherFont, color: editTextColor, fontSize: textFiledSize);
 }
 
 editTextStyleWhite() {

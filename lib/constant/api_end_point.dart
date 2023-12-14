@@ -13,3 +13,8 @@ String verifyOTP = "user/users/verify_otp";
 //task module apis
 String taskStatusList = "task_status/status/list";
 String taskPriorityList = "task_priority/priority/list";
+String taskList = "task/task/list";
+String taskSave = "task/task/save";
+String taskUpdate = "task/task/update";
+String departmentWiseUserList = "department_designation/department/department_vise_user_list";
+String userWiseTagList = "task_tag/tag/user_vise_list";
