@@ -76,7 +76,7 @@ class _DashboardScreenState extends BaseState<DashboardScreen> {
                 // Some other Options
                 otherOptions(),
                 // Task List
-                listTask.isNotEmpty ? myTasksSection() : Container(),
+                (listTask.isNotEmpty && checkValidString(checkRights("my_tasks").viewRights) == "1") ? myTasksSection() : Container(),
                 const SizedBox(height: 20),
               ],
             ),

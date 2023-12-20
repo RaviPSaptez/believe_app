@@ -4,12 +4,79 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../pages/apply_leave.dart';
+import '../pages/birthdays_screen.dart';
 import '../pages/blank_page_new.dart';
 import '../pages/dashboard.dart';
 import '../pages/event_and_news_screen.dart';
 import '../pages/login/update_profile_screen.dart';
 import '../pages/my_leave_screen.dart';
+import '../pages/storage_screen.dart';
 import '../pages/task/my_task_list_screen.dart';
+import '../pages/transfer_request_screen.dart';
+
+
+
+class BirthdayPeople{
+  String? name;
+  String? birthDate;
+  String? profileImg;
+
+  BirthdayPeople({this.name, this.profileImg, this.birthDate});
+
+  static List<BirthdayPeople> peopleList = [
+    BirthdayPeople(
+        name: 'Jinkal Patel',
+        birthDate: '21 Dec',
+        profileImg: 'https://res.cloudinary.com/demo/image/facebook/65646572251.jpg'
+    ),
+    BirthdayPeople(
+        name: 'Hiral Vadodariya',
+        birthDate: '23 Dec',
+        profileImg: 'https://media.licdn.com/dms/image/C4D03AQF_uDlEmOWr9Q/profile-displayphoto-shrink_800_800/0/1609942027869?e=2147483647&v=beta&t=cmnpoMrhzQv9_7wQnTwDkvKXq8i0SKlxo1Ml4FoTYNU'
+    ),
+    BirthdayPeople(
+        name: 'Amisha Kotadia',
+        birthDate: '22 Dec',
+        profileImg: 'https://res.cloudinary.com/demo/image/facebook/65646572251.jpg'
+    ),
+    BirthdayPeople(
+        name: 'Jinkal Patel',
+        birthDate: '24 Dec',
+        profileImg: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiWZb6tHFE9nQ64IIGUnluFlwYfk4D2Rql3ZUBzQ_KwHwvxLY8_Gj1Cr_Kn5Emq_O7dZQ&usqp=CAU'
+    ),
+  ];
+}
+
+
+class TodayBirthday{
+  String? name;
+  String? profileImg;
+
+  TodayBirthday({
+    this.name,
+    this.profileImg
+  });
+
+
+  static List<TodayBirthday> todaybirthdays = [
+    TodayBirthday(
+        name: 'Raj Vadodariya',
+        profileImg: 'https://res.cloudinary.com/demo/image/facebook/65646572251.jpg'
+    ),
+    TodayBirthday(
+        name: 'Vrushik Radadiya',
+        profileImg: 'https://media.licdn.com/dms/image/C4D03AQF_uDlEmOWr9Q/profile-displayphoto-shrink_800_800/0/1609942027869?e=2147483647&v=beta&t=cmnpoMrhzQv9_7wQnTwDkvKXq8i0SKlxo1Ml4FoTYNU'
+    ),
+    TodayBirthday(
+        name: 'Maharshi Saparia',
+        profileImg: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiWZb6tHFE9nQ64IIGUnluFlwYfk4D2Rql3ZUBzQ_KwHwvxLY8_Gj1Cr_Kn5Emq_O7dZQ&usqp=CAU'
+    ),
+    TodayBirthday(
+        name: 'Jay Patel',
+        profileImg: 'https://res.cloudinary.com/demo/image/facebook/65646572251.jpg'
+    ),
+  ];
+}
 
 class DurationLabel{
   String? _name;
@@ -132,7 +199,7 @@ class QuickInfo {
         description: 'Store all documents at one place',
         svgPath: 'assets/svgs/Locker.svg',
         iconBackgroundColor: Colors.blue,
-        screen: BlankPageNew('Locker-My Documents')),
+        screen: StorageScreen()),
     QuickInfo(
         title: 'My Leaves',
         description: 'Apply for leaves from here',
@@ -150,7 +217,7 @@ class QuickInfo {
         description: 'Track your tranfer application',
         svgPath: 'assets/svgs/EmployeeTransfer.svg',
         iconBackgroundColor: Colors.red[600],
-        screen: BlankPageNew('Transfer Application'))
+        screen: TranferRequestScreen())
   ];
 }
 
@@ -198,7 +265,7 @@ class ActivityData {
         description: 'Find Collegue\'s upcoming birthdays',
         svgPath: 'assets/svgs/birthday.svg',
         iconBackgroundColor: Colors.pink[300],
-        screen: BlankPageNew('Birthday Reminders')),
+        screen: BirthDayScreen()),
   ];
 }
 
