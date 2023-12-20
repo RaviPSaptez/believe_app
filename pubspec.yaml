@@ -61,6 +61,11 @@ dependencies:
   provider: ^6.0.5
   page_transition: ^2.1.0
   pin_code_fields: ^7.4.0
+  flutter_svg: ^2.0.9
+  image_picker: ^1.0.5
+  loop_page_view: ^1.2.5
+  file_picker: ^5.2.6
+  need_resume: ^1.0.7+1
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +93,10 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/svgs/
+    - lib/data/task.json
+    - lib/data/myLeaves.json
+    - lib/data/news_event.json
     - fonts/
 
   fonts:

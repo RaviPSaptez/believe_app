@@ -43,5 +43,14 @@ const Color assignBg= Color(0xffECF6FF);
 const Color assignText = Color(0xff0087FF);
 const Color editTextBorder = Color(0xff7E7E7E);
 const Color editTextColor = Color(0xff666666);
+ 
+const Color themeOrange =  Color(0xffFF5D00);
+const Color themeBlue =  Color(0xff0087FF);
+const Color themeGrey =  Color(0xff7C7E88);
+const Color themeBlack = Colors.black;
+const Color themePurple = Color(0xff6113E2);
+const Color themePurpleDark = Color(0xff5811CE);
+const Color themePurpleLight = Color(0xffEBEBFF);
+const Color themePink = Color(0xffDC0168);
 
 

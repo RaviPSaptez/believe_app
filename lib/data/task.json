@@ -1,0 +1,37 @@
+{
+    "tasks": [
+      {
+        "taskName": "Update Logo",
+        "status": "new",
+        "priority": "high",
+        "date": "2023-11-24",
+        "assignedTo": [
+          {
+            "profileImage": "https://ashallendesign.ams3.cdn.digitaloceanspaces.com/rMbsGOyK6i1KjNkbXff8qLohzM1nWQA8HNGwHF0J.png",
+            "personName": "Ranbir Kapoor"
+          },
+          {
+            "profileImage": "https://ashallendesign.ams3.cdn.digitaloceanspaces.com/rMbsGOyK6i1KjNkbXff8qLohzM1nWQA8HNGwHF0J.png",
+            "personName": "Alia Bhatt"
+          }
+        ]
+      },
+      {
+        "taskName": "Website Launch",
+        "status": "doing",
+        "priority": "low",
+        "date": "2023-11-25",
+        "assignedTo": [
+          {
+            "profileImage": "https://ashallendesign.ams3.cdn.digitaloceanspaces.com/rMbsGOyK6i1KjNkbXff8qLohzM1nWQA8HNGwHF0J.png",
+            "personName": "Sunny Deyol"
+          },
+          {
+            "profileImage": "https://ashallendesign.ams3.cdn.digitaloceanspaces.com/rMbsGOyK6i1KjNkbXff8qLohzM1nWQA8HNGwHF0J.png",
+            "personName": "Bobby Deyol"
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -6,6 +6,4 @@ class FilterMenuGetSet {
     id = idStatic;
     name = nameStatic;
   }
-
-
 }

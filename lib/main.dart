@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:believe_app/pages/home.dart';
 import 'package:believe_app/pages/login/login_with_mobile_screen.dart';
 import 'package:believe_app/pages/task/my_task_list_screen.dart';
 import 'package:believe_app/utils/TextChanger.dart';
@@ -93,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Timer(
             const Duration(seconds:1),
                 () => Navigator.of(context)
-                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const MyTaskListScreen()), (Route<dynamic> route) => false));
+                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeScreen()), (Route<dynamic> route) => false));
       } else {
         Timer(
             const Duration(seconds: 1),

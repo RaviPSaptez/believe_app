@@ -12,6 +12,7 @@ import '../../model/login/SendOTPResponseModel.dart';
 import '../../model/login/VerifyOtpResponseModel.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/base_class.dart';
+import '../home.dart';
 
 class VerifyOTPScreen extends StatefulWidget {
   String mobileNumber;
@@ -382,6 +383,10 @@ class _VerifyOTPScreen extends BaseState<VerifyOTPScreen> {
       {
         sessionManager.setIsLoggedIn(true);
         sessionManager.createLoginSession(dataResponse.data);
+        if (dataResponse.data?.moduleRights != null)
+        {
+          await sessionManager.setPermissions(dataResponse.data?.moduleRights ?? []);
+        }
         openNextPage();
       }
       catch (e)
@@ -405,6 +410,6 @@ class _VerifyOTPScreen extends BaseState<VerifyOTPScreen> {
   }
 
   void openNextPage() {
-    startActivity(context, const MyTaskListScreen());
+    startActivity(context, const HomeScreen());
   }
 }

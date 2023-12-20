@@ -14,9 +14,11 @@ import '../../model/task/TaskPriorityListResponse.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/base_class.dart';
 import '../../utils/session_manager.dart';
+import '../../widget/loading.dart';
 
 class AddTaskScreen extends StatefulWidget {
   List<TaskPriorityData> listPriority = List<TaskPriorityData>.empty(growable: true);
+
   AddTaskScreen(this.listPriority, {Key? key}) : super(key: key);
 
   @override
@@ -65,19 +67,19 @@ class _AddTaskScreenState extends BaseState<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: blueDark,
+      statusBarColor: blueNormal,
       statusBarIconBrightness: Brightness.light, // For Android (dark icons)
       statusBarBrightness: Brightness.light,
     ));
     return Scaffold(
-        backgroundColor: blueDark,
+        backgroundColor: blueNormal,
         resizeToAvoidBottomInset: true,
         body: Padding(
           padding: const EdgeInsets.only(bottom: 0),
           child: Stack(
             children: [
               Container(
-                  decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueNormal),
+                  decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueDark),
                   height: MediaQuery.of(context).size.height * 0.9,
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.only(top: 60, bottom: 60, left: 18, right: 18)),
@@ -87,366 +89,376 @@ class _AddTaskScreenState extends BaseState<AddTaskScreen> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.only(top: 75),
-                child: Column(
-                  children: [
-                    appBar(),
-                    const Divider(color: grayLight, height: 1, thickness: 1),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                "Task Title",
-                                textAlign: TextAlign.start,
-                                style: font18SemiBold(black),
-                              ),
-                              const Gap(16),
-                              TextField(
-                                cursorColor: editTextColor,
-                                controller: _taskTitleController,
-                                keyboardType: TextInputType.text,
-                                style: editTextStyleAll(),
-                                decoration: InputDecoration(
-                                  fillColor: white,
-                                  contentPadding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  labelStyle: const TextStyle(
-                                    color: editTextColor,
-                                    fontSize: 16,
-                                    fontFamily: otherFont,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  hintStyle: const TextStyle(color: editTextColor, fontSize: 16, fontFamily: otherFont, fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                              const Gap(16),
-                              Text(
-                                "Description",
-                                textAlign: TextAlign.start,
-                                style: font18SemiBold(black),
-                              ),
-                              const Gap(16),
-                              TextField(
-                                cursorColor: editTextColor,
-                                controller: _descriptionController,
-                                keyboardType: TextInputType.text,
-                                style: editTextStyleAll(),
-                                maxLines: 6,
-                                minLines: 4,
-                                decoration: InputDecoration(
-                                  fillColor: white,
-                                  contentPadding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  labelStyle: const TextStyle(
-                                    color: editTextColor,
-                                    fontSize: 16,
-                                    fontFamily: otherFont,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  hintStyle: const TextStyle(color: editTextColor, fontSize: 16, fontFamily: otherFont, fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                              const Gap(16),
-                              Text(
-                                "Task Due Date",
-                                textAlign: TextAlign.start,
-                                style: font18SemiBold(black),
-                              ),
-                              const Gap(16),
-                              TextField(
-                                cursorColor: editTextColor,
-                                controller: _taskDueDateController,
-                                keyboardType: TextInputType.text,
-                                style: editTextStyleAll(),
-                                readOnly: true,
-                                onTap: () {
-                                  _showDatePicker();
-                                },
-                                decoration: InputDecoration(
-                                  suffixIcon: Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Image.asset(
-                                      'assets/images/ic_due_date.png',
-                                      height: 12,
-                                      width: 12,
-                                      color: editTextColor,
-                                    ),
-                                  ),
-                                  fillColor: white,
-                                  contentPadding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  labelStyle: const TextStyle(
-                                    color: editTextColor,
-                                    fontSize: 16,
-                                    fontFamily: otherFont,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  hintStyle: const TextStyle(color: editTextColor, fontSize: 16, fontFamily: otherFont, fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                              const Gap(16),
-                              Text(
-                                "Task Due Time",
-                                textAlign: TextAlign.start,
-                                style: font18SemiBold(black),
-                              ),
-                              const Gap(16),
-                              TextField(
-                                cursorColor: editTextColor,
-                                controller: _taskDueTimeController,
-                                keyboardType: TextInputType.text,
-                                style: editTextStyleAll(),
-                                readOnly: true,
-                                onTap: () {
-                                  _selectTime();
-                                },
-                                decoration: InputDecoration(
-                                  suffixIcon: Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Image.asset(
-                                      'assets/images/ic_due_time.png',
-                                      height: 12,
-                                      width: 12,
-                                      color: editTextColor,
-                                    ),
-                                  ),
-                                  fillColor: white,
-                                  contentPadding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(kButtonCornerRadius),
-                                      borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
-                                  labelStyle: const TextStyle(
-                                    color: editTextColor,
-                                    fontSize: 16,
-                                    fontFamily: otherFont,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  hintStyle: const TextStyle(color: editTextColor, fontSize: 16, fontFamily: otherFont, fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                              const Gap(16),
-                              Text(
-                                "Task Priority",
-                                textAlign: TextAlign.start,
-                                style: font18SemiBold(black),
-                              ),
-                              const Gap(16),
-                              taskPriorityListWidget(),
-                              const Gap(16),
-                              Text(
-                                "Choose Option",
-                                textAlign: TextAlign.start,
-                                style: font18SemiBold(black),
-                              ),
-                              const Gap(16),
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isSelectedAssignees = true;
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                            isSelectedAssignees ? 'assets/images/ic_radio_selected.png' : 'assets/images/ic_radio_un_selected.png',
-                                            height: 20,
-                                            width: 20,
-                                            color: blueNormal),
-                                        Gap(6),
-                                        Text(
-                                          "Add Assignees",
-                                          textAlign: TextAlign.start,
-                                          style: font18SemiBold(blueNormal),
-                                        )
-                                      ],
-                                    ),
-                                  )),
-                                  Expanded(
-                                      child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isSelectedAssignees = false;
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                            isSelectedAssignees ? 'assets/images/ic_radio_un_selected.png' : 'assets/images/ic_radio_selected.png',
-                                            height: 20,
-                                            width: 20,
-                                            color: blueNormal),
-                                        Gap(6),
-                                        Text(
-                                          "Add Subtask",
-                                          textAlign: TextAlign.start,
-                                          style: font18SemiBold(blueNormal),
-                                        )
-                                      ],
-                                    ),
-                                  ))
-                                ],
-                              ),
-                              Visibility(
-                                  visible: isSelectedAssignees,
-                                  child: Column(
-                                    children: [
-                                      const Gap(16),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                              child: Text(
-                                            "Assignees",
-                                            textAlign: TextAlign.start,
-                                            style: font18SemiBold(black),
-                                          )),
-                                          GestureDetector(
-                                            onTap: () {
-                                              //open user selection
-                                              openDepartmentWiseUserSelection(true);
-                                            },
-                                            child: Text(
-                                              "+ Add Assignees",
-                                              textAlign: TextAlign.start,
-                                              style: font18SemiBold(blueNormal),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      Visibility(
-                                          visible: listDepartmentWiseUserListSelected.isNotEmpty,
-                                          child: Column(
-                                            children: [const Gap(16), selectedUserList()],
-                                          )),
-                                    ],
-                                  )),
-                              Visibility(
-                                visible: !isSelectedAssignees,
+                child: _isLoading
+                    ? const LoadingWidget()
+                    : Column(
+                        children: [
+                          appBar(),
+                          const Divider(color: grayLight, height: 1, thickness: 1),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.max,
                                   children: [
+                                    Text(
+                                      "Task Title",
+                                      textAlign: TextAlign.start,
+                                      style: font18SemiBold(black),
+                                    ),
+                                    const Gap(16),
+                                    TextField(
+                                      cursorColor: editTextColor,
+                                      controller: _taskTitleController,
+                                      keyboardType: TextInputType.text,
+                                      style: editTextStyleAll(),
+                                      decoration: InputDecoration(
+                                        fillColor: white,
+                                        contentPadding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
+                                        border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        errorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        labelStyle: const TextStyle(
+                                          color: editTextColor,
+                                          fontSize: 16,
+                                          fontFamily: otherFont,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        hintStyle:
+                                            const TextStyle(color: editTextColor, fontSize: 16, fontFamily: otherFont, fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                    const Gap(16),
+                                    Text(
+                                      "Description",
+                                      textAlign: TextAlign.start,
+                                      style: font18SemiBold(black),
+                                    ),
+                                    const Gap(16),
+                                    TextField(
+                                      cursorColor: editTextColor,
+                                      controller: _descriptionController,
+                                      keyboardType: TextInputType.text,
+                                      style: editTextStyleAll(),
+                                      maxLines: 6,
+                                      minLines: 4,
+                                      decoration: InputDecoration(
+                                        fillColor: white,
+                                        contentPadding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
+                                        border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        errorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        labelStyle: const TextStyle(
+                                          color: editTextColor,
+                                          fontSize: 16,
+                                          fontFamily: otherFont,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        hintStyle:
+                                            const TextStyle(color: editTextColor, fontSize: 16, fontFamily: otherFont, fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                    const Gap(16),
+                                    Text(
+                                      "Task Due Date",
+                                      textAlign: TextAlign.start,
+                                      style: font18SemiBold(black),
+                                    ),
+                                    const Gap(16),
+                                    TextField(
+                                      cursorColor: editTextColor,
+                                      controller: _taskDueDateController,
+                                      keyboardType: TextInputType.text,
+                                      style: editTextStyleAll(),
+                                      readOnly: true,
+                                      onTap: () {
+                                        _showDatePicker();
+                                      },
+                                      decoration: InputDecoration(
+                                        suffixIcon: Padding(
+                                          padding: const EdgeInsets.all(16),
+                                          child: Image.asset(
+                                            'assets/images/ic_due_date.png',
+                                            height: 12,
+                                            width: 12,
+                                            color: editTextColor,
+                                          ),
+                                        ),
+                                        fillColor: white,
+                                        contentPadding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
+                                        border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        errorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        labelStyle: const TextStyle(
+                                          color: editTextColor,
+                                          fontSize: 16,
+                                          fontFamily: otherFont,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        hintStyle:
+                                            const TextStyle(color: editTextColor, fontSize: 16, fontFamily: otherFont, fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                    const Gap(16),
+                                    Text(
+                                      "Task Due Time",
+                                      textAlign: TextAlign.start,
+                                      style: font18SemiBold(black),
+                                    ),
+                                    const Gap(16),
+                                    TextField(
+                                      cursorColor: editTextColor,
+                                      controller: _taskDueTimeController,
+                                      keyboardType: TextInputType.text,
+                                      style: editTextStyleAll(),
+                                      readOnly: true,
+                                      onTap: () {
+                                        _selectTime();
+                                      },
+                                      decoration: InputDecoration(
+                                        suffixIcon: Padding(
+                                          padding: const EdgeInsets.all(16),
+                                          child: Image.asset(
+                                            'assets/images/ic_due_time.png',
+                                            height: 12,
+                                            width: 12,
+                                            color: editTextColor,
+                                          ),
+                                        ),
+                                        fillColor: white,
+                                        contentPadding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
+                                        border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        errorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, color: editTextBorder)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                            borderSide: const BorderSide(width: 0.5, style: BorderStyle.solid, color: editTextBorder)),
+                                        labelStyle: const TextStyle(
+                                          color: editTextColor,
+                                          fontSize: 16,
+                                          fontFamily: otherFont,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        hintStyle:
+                                            const TextStyle(color: editTextColor, fontSize: 16, fontFamily: otherFont, fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                    const Gap(16),
+                                    Text(
+                                      "Task Priority",
+                                      textAlign: TextAlign.start,
+                                      style: font18SemiBold(black),
+                                    ),
+                                    const Gap(16),
+                                    taskPriorityListWidget(),
+                                    const Gap(16),
+                                    Text(
+                                      "Choose Option",
+                                      textAlign: TextAlign.start,
+                                      style: font18SemiBold(black),
+                                    ),
                                     const Gap(16),
                                     Row(
                                       children: [
                                         Expanded(
-                                            child: Text(
-                                          "Subtask",
-                                          textAlign: TextAlign.start,
-                                          style: font18SemiBold(black),
-                                        )),
-                                        GestureDetector(
+                                            child: GestureDetector(
                                           onTap: () {
-                                            createSubTask();
+                                            setState(() {
+                                              isSelectedAssignees = true;
+                                            });
                                           },
-                                          child: Text(
-                                            "+Add Subtask",
-                                            textAlign: TextAlign.start,
-                                            style: font18SemiBold(blueNormal),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                  isSelectedAssignees
+                                                      ? 'assets/images/ic_radio_selected.png'
+                                                      : 'assets/images/ic_radio_un_selected.png',
+                                                  height: 20,
+                                                  width: 20,
+                                                  color: blueNormal),
+                                              Gap(6),
+                                              Text(
+                                                "Add Assignees",
+                                                textAlign: TextAlign.start,
+                                                style: font18SemiBold(blueNormal),
+                                              )
+                                            ],
                                           ),
-                                        )
+                                        )),
+                                        Expanded(
+                                            child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isSelectedAssignees = false;
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                  isSelectedAssignees
+                                                      ? 'assets/images/ic_radio_un_selected.png'
+                                                      : 'assets/images/ic_radio_selected.png',
+                                                  height: 20,
+                                                  width: 20,
+                                                  color: blueNormal),
+                                              Gap(6),
+                                              Text(
+                                                "Add Subtask",
+                                                textAlign: TextAlign.start,
+                                                style: font18SemiBold(blueNormal),
+                                              )
+                                            ],
+                                          ),
+                                        ))
                                       ],
                                     ),
                                     Visibility(
-                                        visible: listSubTask.isNotEmpty,
+                                        visible: isSelectedAssignees,
                                         child: Column(
-                                          children: [const Gap(16), subTaskList()],
+                                          children: [
+                                            const Gap(16),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                    child: Text(
+                                                  "Assignees",
+                                                  textAlign: TextAlign.start,
+                                                  style: font18SemiBold(black),
+                                                )),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    //open user selection
+                                                    openDepartmentWiseUserSelection(true);
+                                                  },
+                                                  child: Text(
+                                                    "+ Add Assignees",
+                                                    textAlign: TextAlign.start,
+                                                    style: font18SemiBold(blueNormal),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            Visibility(
+                                                visible: listDepartmentWiseUserListSelected.isNotEmpty,
+                                                child: Column(
+                                                  children: [const Gap(16), selectedUserList()],
+                                                )),
+                                          ],
                                         )),
+                                    Visibility(
+                                      visible: !isSelectedAssignees,
+                                      child: Column(
+                                        children: [
+                                          const Gap(16),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text(
+                                                "Subtask",
+                                                textAlign: TextAlign.start,
+                                                style: font18SemiBold(black),
+                                              )),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  createSubTask();
+                                                },
+                                                child: Text(
+                                                  "+Add Subtask",
+                                                  textAlign: TextAlign.start,
+                                                  style: font18SemiBold(blueNormal),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          Visibility(
+                                              visible: listSubTask.isNotEmpty,
+                                              child: Column(
+                                                children: [const Gap(16), subTaskList()],
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        const Gap(16),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Text(
+                                              "Tags",
+                                              textAlign: TextAlign.start,
+                                              style: font18SemiBold(black),
+                                            )),
+                                            GestureDetector(
+                                              onTap: () {
+                                                addTagsPopup();
+                                              },
+                                              child: Text(
+                                                "+Add Tag",
+                                                textAlign: TextAlign.start,
+                                                style: font18SemiBold(blueNormal),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const Gap(16),
+                                        Visibility(visible: listTags.isNotEmpty, child: taskTagsListWidget()),
+                                      ],
+                                    )
                                   ],
                                 ),
                               ),
-                              Column(
-                                children: [
-                                  const Gap(16),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          child: Text(
-                                        "Tags",
-                                        textAlign: TextAlign.start,
-                                        style: font18SemiBold(black),
-                                      )),
-                                      GestureDetector(
-                                        onTap: () {
-                                          addTagsPopup();
-                                        },
-                                        child: Text(
-                                          "+Add Tag",
-                                          textAlign: TextAlign.start,
-                                          style: font18SemiBold(blueNormal),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const Gap(16),
-                                  Visibility(visible: listTags.isNotEmpty, child: taskTagsListWidget()),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
               )
             ],
           ),
@@ -614,7 +626,17 @@ class _AddTaskScreenState extends BaseState<AddTaskScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Gap(50),
+                    SizedBox(
+                      height: 36,
+                      width: 36,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(28),
+                        //Profile Image
+                        child: Image.network(
+                            fit: BoxFit.cover, checkValidString(listDepartmentWiseUserListSelected[index].profilePicFull).toString().isNotEmpty ? checkValidString(listDepartmentWiseUserListSelected[index].profilePicFull).toString() : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
+                      ),
+                    ),
+                    Gap(12),
                     Expanded(
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,7 +1,7 @@
 import 'dart:convert';
 /// success : 1
 /// message : ""
-/// data : {"id":"1","department_id":"1","department":"Factory","designation_id":"2","designation":"General Manager","name":"vrushik patel","name_small":"V","email_address":"dasd@dasd.com","country":"91","contact_no":"91 1234567891","hod":"1","aadhaar_card_no":"123112341233","aadhaar_card_front_photo":"","aadhaar_card_front_photo_full":"","aadhaar_card_back_photo":"","aadhaar_card_back_photo_full":"","aadhaar_card_pdf":"aadhaar_1701764692_28.pdf","aadhaar_card_pdf_full":"https://demo1.saptez.com/believeapp/api/assets/documents/aadhaar/aadhaar_1701764692_28.pdf","aadhaar_card_photo_0_or_pdf_1":"1","pan_card_no":"","pan_card_photo":"","pan_card_photo_full":"","pan_card_pdf":"pan_1701764692_77.pdf","pan_card_pdf_full":"https://demo1.saptez.com/believeapp/api/assets/documents/pan/pan_1701764692_77.pdf","pan_card_photo_0_or_pdf_1":"1","passport_size_photo":"profile_1701764692_40.png","passport_size_photo_full":"https://demo1.saptez.com/believeapp/api/image-tool/index.php?src=https://demo1.saptez.com/believeapp/api/assets/documents/profile/profile_1701764692_40.png","created_at_date_time":{"date":"05 Dec, 2023","time":"01:54 PM"},"updated_at_date_time":{"date":"","time":""},"is_active":"1"}
+/// data : {"id":"1","department_id":"1","department":"Factory","designation_id":"2","designation":"General Manager","name":"vrushik patel","name_small":"V","email_address":"hr@saptez.com","country":"91","contact_no":"91 1234567891","hod":"1","aadhaar_card_no":"123112341233","aadhaar_card_front_photo":"","aadhaar_card_front_photo_full":"","aadhaar_card_back_photo":"","aadhaar_card_back_photo_full":"","aadhaar_card_pdf":"aadhaar_1701764692_28.pdf","aadhaar_card_pdf_full":"https://demo1.saptez.com/believeapp/api/assets/documents/aadhaar/aadhaar_1701764692_28.pdf","aadhaar_card_photo_0_or_pdf_1":"1","pan_card_no":"","pan_card_photo":"","pan_card_photo_full":"","pan_card_pdf":"pan_1701764692_77.pdf","pan_card_pdf_full":"https://demo1.saptez.com/believeapp/api/assets/documents/pan/pan_1701764692_77.pdf","pan_card_photo_0_or_pdf_1":"1","passport_size_photo":"profile_1701764725_60.jpg","passport_size_photo_full":"https://demo1.saptez.com/believeapp/api/image-tool/index.php?src=https://demo1.saptez.com/believeapp/api/assets/documents/profile/profile_1701764725_60.jpg","profile_pic":"","profile_pic_full":"https://demo1.saptez.com/believeapp/api/image-tool/index.php?src=https://demo1.saptez.com/believeapp/api/assets/user_dummy.jpg","created_at_date_time":{"date":"05 Dec, 2023","time":"01:54 PM"},"updated_at_date_time":{"date":"","time":""},"is_active":"1","module_rights":[{"id":"5","type":"announcement","name":"Announcement","view_rights":"1","add_rights":"0","delete_rights":"0"},{"id":"7","type":"birthday_reminders","name":"Birthday Reminders","view_rights":"0","add_rights":"","delete_rights":""},{"id":"6","type":"events","name":"Events","view_rights":"0","add_rights":"0","delete_rights":"0"},{"id":"8","type":"feedback","name":"Feedback","view_rights":"0","add_rights":"0","delete_rights":"0"},{"id":"3","type":"kudos","name":"Kudos","view_rights":"0","add_rights":"0","delete_rights":"0"},{"id":"1","type":"locker_my_Documents","name":"Locker-My Documents","view_rights":"1","add_rights":"0","delete_rights":"0"},{"id":"4","type":"motivate_morivational_quotes","name":"Motivate-Morivational Quotes","view_rights":"0","add_rights":"0","delete_rights":"0"},{"id":"2","type":"my_tasks","name":"My Tasks","view_rights":"0","add_rights":"0","delete_rights":"0"}]}
 
 VerifyOtpResponseModel verifyOtpResponseModelFromJson(String str) => VerifyOtpResponseModel.fromJson(json.decode(str));
 String verifyOtpResponseModelToJson(VerifyOtpResponseModel data) => json.encode(data.toJson());
@@ -53,7 +53,7 @@ VerifyOtpResponseModel copyWith({  num? success,
 /// designation : "General Manager"
 /// name : "vrushik patel"
 /// name_small : "V"
-/// email_address : "dasd@dasd.com"
+/// email_address : "hr@saptez.com"
 /// country : "91"
 /// contact_no : "91 1234567891"
 /// hod : "1"
@@ -71,11 +71,14 @@ VerifyOtpResponseModel copyWith({  num? success,
 /// pan_card_pdf : "pan_1701764692_77.pdf"
 /// pan_card_pdf_full : "https://demo1.saptez.com/believeapp/api/assets/documents/pan/pan_1701764692_77.pdf"
 /// pan_card_photo_0_or_pdf_1 : "1"
-/// passport_size_photo : "profile_1701764692_40.png"
-/// passport_size_photo_full : "https://demo1.saptez.com/believeapp/api/image-tool/index.php?src=https://demo1.saptez.com/believeapp/api/assets/documents/profile/profile_1701764692_40.png"
+/// passport_size_photo : "profile_1701764725_60.jpg"
+/// passport_size_photo_full : "https://demo1.saptez.com/believeapp/api/image-tool/index.php?src=https://demo1.saptez.com/believeapp/api/assets/documents/profile/profile_1701764725_60.jpg"
+/// profile_pic : ""
+/// profile_pic_full : "https://demo1.saptez.com/believeapp/api/image-tool/index.php?src=https://demo1.saptez.com/believeapp/api/assets/user_dummy.jpg"
 /// created_at_date_time : {"date":"05 Dec, 2023","time":"01:54 PM"}
 /// updated_at_date_time : {"date":"","time":""}
 /// is_active : "1"
+/// module_rights : [{"id":"5","type":"announcement","name":"Announcement","view_rights":"1","add_rights":"0","delete_rights":"0"},{"id":"7","type":"birthday_reminders","name":"Birthday Reminders","view_rights":"0","add_rights":"","delete_rights":""},{"id":"6","type":"events","name":"Events","view_rights":"0","add_rights":"0","delete_rights":"0"},{"id":"8","type":"feedback","name":"Feedback","view_rights":"0","add_rights":"0","delete_rights":"0"},{"id":"3","type":"kudos","name":"Kudos","view_rights":"0","add_rights":"0","delete_rights":"0"},{"id":"1","type":"locker_my_Documents","name":"Locker-My Documents","view_rights":"1","add_rights":"0","delete_rights":"0"},{"id":"4","type":"motivate_morivational_quotes","name":"Motivate-Morivational Quotes","view_rights":"0","add_rights":"0","delete_rights":"0"},{"id":"2","type":"my_tasks","name":"My Tasks","view_rights":"0","add_rights":"0","delete_rights":"0"}]
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
@@ -108,9 +111,12 @@ class Data {
       String? panCardPhoto0OrPdf1, 
       String? passportSizePhoto, 
       String? passportSizePhotoFull, 
+      String? profilePic, 
+      String? profilePicFull, 
       CreatedAtDateTime? createdAtDateTime, 
       UpdatedAtDateTime? updatedAtDateTime, 
-      String? isActive,}){
+      String? isActive, 
+      List<ModuleRights>? moduleRights,}){
     _id = id;
     _departmentId = departmentId;
     _department = department;
@@ -138,9 +144,12 @@ class Data {
     _panCardPhoto0OrPdf1 = panCardPhoto0OrPdf1;
     _passportSizePhoto = passportSizePhoto;
     _passportSizePhotoFull = passportSizePhotoFull;
+    _profilePic = profilePic;
+    _profilePicFull = profilePicFull;
     _createdAtDateTime = createdAtDateTime;
     _updatedAtDateTime = updatedAtDateTime;
     _isActive = isActive;
+    _moduleRights = moduleRights;
 }
 
   Data.fromJson(dynamic json) {
@@ -171,9 +180,17 @@ class Data {
     _panCardPhoto0OrPdf1 = json['pan_card_photo_0_or_pdf_1'];
     _passportSizePhoto = json['passport_size_photo'];
     _passportSizePhotoFull = json['passport_size_photo_full'];
+    _profilePic = json['profile_pic'];
+    _profilePicFull = json['profile_pic_full'];
     _createdAtDateTime = json['created_at_date_time'] != null ? CreatedAtDateTime.fromJson(json['created_at_date_time']) : null;
     _updatedAtDateTime = json['updated_at_date_time'] != null ? UpdatedAtDateTime.fromJson(json['updated_at_date_time']) : null;
     _isActive = json['is_active'];
+    if (json['module_rights'] != null) {
+      _moduleRights = [];
+      json['module_rights'].forEach((v) {
+        _moduleRights?.add(ModuleRights.fromJson(v));
+      });
+    }
   }
   String? _id;
   String? _departmentId;
@@ -202,9 +219,12 @@ class Data {
   String? _panCardPhoto0OrPdf1;
   String? _passportSizePhoto;
   String? _passportSizePhotoFull;
+  String? _profilePic;
+  String? _profilePicFull;
   CreatedAtDateTime? _createdAtDateTime;
   UpdatedAtDateTime? _updatedAtDateTime;
   String? _isActive;
+  List<ModuleRights>? _moduleRights;
 Data copyWith({  String? id,
   String? departmentId,
   String? department,
@@ -232,9 +252,12 @@ Data copyWith({  String? id,
   String? panCardPhoto0OrPdf1,
   String? passportSizePhoto,
   String? passportSizePhotoFull,
+  String? profilePic,
+  String? profilePicFull,
   CreatedAtDateTime? createdAtDateTime,
   UpdatedAtDateTime? updatedAtDateTime,
   String? isActive,
+  List<ModuleRights>? moduleRights,
 }) => Data(  id: id ?? _id,
   departmentId: departmentId ?? _departmentId,
   department: department ?? _department,
@@ -262,9 +285,12 @@ Data copyWith({  String? id,
   panCardPhoto0OrPdf1: panCardPhoto0OrPdf1 ?? _panCardPhoto0OrPdf1,
   passportSizePhoto: passportSizePhoto ?? _passportSizePhoto,
   passportSizePhotoFull: passportSizePhotoFull ?? _passportSizePhotoFull,
+  profilePic: profilePic ?? _profilePic,
+  profilePicFull: profilePicFull ?? _profilePicFull,
   createdAtDateTime: createdAtDateTime ?? _createdAtDateTime,
   updatedAtDateTime: updatedAtDateTime ?? _updatedAtDateTime,
   isActive: isActive ?? _isActive,
+  moduleRights: moduleRights ?? _moduleRights,
 );
   String? get id => _id;
   String? get departmentId => _departmentId;
@@ -293,9 +319,12 @@ Data copyWith({  String? id,
   String? get panCardPhoto0OrPdf1 => _panCardPhoto0OrPdf1;
   String? get passportSizePhoto => _passportSizePhoto;
   String? get passportSizePhotoFull => _passportSizePhotoFull;
+  String? get profilePic => _profilePic;
+  String? get profilePicFull => _profilePicFull;
   CreatedAtDateTime? get createdAtDateTime => _createdAtDateTime;
   UpdatedAtDateTime? get updatedAtDateTime => _updatedAtDateTime;
   String? get isActive => _isActive;
+  List<ModuleRights>? get moduleRights => _moduleRights;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -326,6 +355,8 @@ Data copyWith({  String? id,
     map['pan_card_photo_0_or_pdf_1'] = _panCardPhoto0OrPdf1;
     map['passport_size_photo'] = _passportSizePhoto;
     map['passport_size_photo_full'] = _passportSizePhotoFull;
+    map['profile_pic'] = _profilePic;
+    map['profile_pic_full'] = _profilePicFull;
     if (_createdAtDateTime != null) {
       map['created_at_date_time'] = _createdAtDateTime?.toJson();
     }
@@ -333,6 +364,81 @@ Data copyWith({  String? id,
       map['updated_at_date_time'] = _updatedAtDateTime?.toJson();
     }
     map['is_active'] = _isActive;
+    if (_moduleRights != null) {
+      map['module_rights'] = _moduleRights?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+/// id : "5"
+/// type : "announcement"
+/// name : "Announcement"
+/// view_rights : "1"
+/// add_rights : "0"
+/// delete_rights : "0"
+
+ModuleRights moduleRightsFromJson(String str) => ModuleRights.fromJson(json.decode(str));
+String moduleRightsToJson(ModuleRights data) => json.encode(data.toJson());
+class ModuleRights {
+  ModuleRights({
+      String? id, 
+      String? type, 
+      String? name, 
+      String? viewRights, 
+      String? addRights, 
+      String? deleteRights,}){
+    _id = id;
+    _type = type;
+    _name = name;
+    _viewRights = viewRights;
+    _addRights = addRights;
+    _deleteRights = deleteRights;
+}
+
+  ModuleRights.fromJson(dynamic json) {
+    _id = json['id'];
+    _type = json['type'];
+    _name = json['name'];
+    _viewRights = json['view_rights'];
+    _addRights = json['add_rights'];
+    _deleteRights = json['delete_rights'];
+  }
+  String? _id;
+  String? _type;
+  String? _name;
+  String? _viewRights;
+  String? _addRights;
+  String? _deleteRights;
+ModuleRights copyWith({  String? id,
+  String? type,
+  String? name,
+  String? viewRights,
+  String? addRights,
+  String? deleteRights,
+}) => ModuleRights(  id: id ?? _id,
+  type: type ?? _type,
+  name: name ?? _name,
+  viewRights: viewRights ?? _viewRights,
+  addRights: addRights ?? _addRights,
+  deleteRights: deleteRights ?? _deleteRights,
+);
+  String? get id => _id;
+  String? get type => _type;
+  String? get name => _name;
+  String? get viewRights => _viewRights;
+  String? get addRights => _addRights;
+  String? get deleteRights => _deleteRights;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['type'] = _type;
+    map['name'] = _name;
+    map['view_rights'] = _viewRights;
+    map['add_rights'] = _addRights;
+    map['delete_rights'] = _deleteRights;
     return map;
   }
 

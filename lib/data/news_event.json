@@ -1,0 +1,101 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "department_id": "101",
+      "title": "Festive Cheer & Team Unity: Our Company's Christmas Celebration",
+      "description": "This is a detailed description for news 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget turpis ultricies, vestibulum ante sed, accumsan ligula. Vivamus non risus vitae odio semper finibus vel id lorem. Nam convallis enim vel dolor fermentum, ut sagittis dui lacinia. In euismod dui eget urna tincidunt, vitae tempor justo eleifend. Sed lacinia augue vel lorem malesuada, nec fermentum metus tempor. Quisque hendrerit semper sapien, eget auctor orci fermentum nec. Donec suscipit gravida metus at facilisis. Nullam vitae interdum orci. Integer id cursus libero.",
+      "attachment": "file1.jpg",
+      "attachment_full": "https://images.unsplash.com/photo-1682687220945-922198770e60?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "campaign_time": "1702364275",
+      "campaign_type": "1",
+      "rsvp": "0",
+      "created_at_date_time": {
+        "date": "12 Dec, 2023",
+        "time": "12:42 PM"
+      },
+      "updated_at_date_time": {
+        "date": "13 Dec, 2023",
+        "time": "09:30 AM"
+      }
+    },
+    {
+      "id": "2",
+      "department_id": "102",
+      "title": "news 2",
+      "description": "Our company's Christmas celebration was a festive affair,\nadorned with dazzling decorations and joyful camaraderie.\nEmployees shared laughter, indulged in delicious treats,\nand exchanged heartfelt gifts, fostering a wonderful sense\nof holiday cheer and unity.",
+      "attachment": "file2.pdf",
+      "attachment_full": "",
+      "campaign_time": "1702364276",
+      "campaign_type": "2",
+      "rsvp": "1",
+      "created_at_date_time": {
+        "date": "13 Dec, 2023",
+        "time": "10:15 AM"
+      },
+      "updated_at_date_time": {
+        "date": "14 Dec, 2023",
+        "time": "11:20 AM"
+      }
+    },
+    {
+      "id": "3",
+      "department_id": "103",
+      "title": "news 3",
+      "description": "This is a lengthy description for news 3. Etiam nec dui id metus ullamcorper vestibulum. Curabitur bibendum hendrerit lectus, vel dapibus leo commodo vel. Integer ac elit vitae metus convallis lacinia. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec nec purus non metus dapibus volutpat. Quisque at eros quis neque tincidunt vehicula eu sit amet mauris. In hac habitasse platea dictumst. Sed bibendum risus id dui consectetur ullamcorper.",
+      "attachment": "",
+      "attachment_full": "https://images.unsplash.com/photo-1682687220208-22d7a2543e88?q=80&w=1975&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "campaign_time": "1702364277",
+      "campaign_type": "1",
+      "rsvp": "0",
+      "created_at_date_time": {
+        "date": "14 Dec, 2023",
+        "time": "03:30 PM"
+      },
+      "updated_at_date_time": {
+        "date": "",
+        "time": ""
+      }
+    },
+    {
+      "id": "4",
+      "department_id": "104",
+      "title": "news 4",
+      "description": "A detailed and elaborate description for news 4. Duis auctor arcu id elit hendrerit, a convallis metus bibendum. Sed in orci id nisl bibendum placerat. Fusce at mauris eu tellus fermentum tempor nec vel massa. Nunc vel lacus in ipsum pharetra iaculis. Integer eget massa sed dolor laoreet bibendum. Aliquam erat volutpat. Sed commodo feugiat justo, vitae sollicitudin dolor accumsan vitae.",
+      "attachment": "file4.doc",
+      "attachment_full": "https://images.unsplash.com/photo-1682686580391-615b1f28e5ee?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "campaign_time": "1702364278",
+      "campaign_type": "2",
+      "rsvp": "1",
+      "created_at_date_time": {
+        "date": "15 Dec, 2023",
+        "time": "09:00 AM"
+      },
+      "updated_at_date_time": {
+        "date": "15 Dec, 2023",
+        "time": "11:30 AM"
+      }
+    },
+    {
+      "id": "5",
+      "department_id": "105",
+      "title": "news 5",
+      "description": "This description for news 5 is quite extensive. Curabitur nec vestibulum eros. In hac habitasse platea dictumst. Aenean a risus libero. Phasellus vitae quam in libero pellentesque mollis. Mauris ut ipsum a nisi tristique aliquet ut a ligula. Morbi eget semper orci. Ut vestibulum justo vitae ex viverra, quis hendrerit arcu eleifend.",
+      "attachment": "file5.png",
+      "attachment_full": "https://images.unsplash.com/photo-1702145754106-05d909f08c9d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "campaign_time": "1702364279",
+      "campaign_type": "1",
+      "rsvp": "1",
+      "created_at_date_time": {
+        "date": "16 Dec, 2023",
+        "time": "01:00 PM"
+      },
+      "updated_at_date_time": {
+        "date": "16 Dec, 2023",
+        "time": "03:45 PM"
+      }
+    }
+  ],
+  "success": 1,
+  "message": "Records found."
+}

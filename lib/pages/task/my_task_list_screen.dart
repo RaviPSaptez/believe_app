@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:believe_app/pages/task/task_detail_page.dart';
 import 'package:believe_app/pages/task/update_task_page.dart';
 import 'package:believe_app/widget/no_data.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:pretty_http_logger/pretty_http_logger.dart';
 import '../../constant/api_end_point.dart';
 import '../../constant/colors.dart';
 import '../../constant/static_item.dart';
+import '../../model/login/VerifyOtpResponseModel.dart';
 import '../../model/task/DepartmentWiseUserResponse.dart';
 import '../../model/task/FilterValueModel.dart';
 import '../../model/task/TaskListResponseModel.dart';
@@ -32,7 +34,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
   bool _isLoading = false;
   final TextEditingController _searchController = TextEditingController();
   String searchText = "";
-  List<TaskStatusData> listStatus = List<TaskStatusData>.empty(growable: true);
+  List<FilterMenuGetSet> listStatus = List<FilterMenuGetSet>.empty(growable: true);
   List<TaskPriorityData> listPriority = List<TaskPriorityData>.empty(growable: true);
   List<FilterMenuGetSet> listPriorityFilter = List<FilterMenuGetSet>.empty(growable: true);
   List<TaskListData> listTask = List<TaskListData>.empty(growable: true);
@@ -43,14 +45,15 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
 
   //filter option value
   var statusID = "";
-  var whereOption = "";
+  var whereOption = "Status";
   var isOrNotOption = 'Is';
   var selectedPriorityId = "";
   var selectedAssigneesId = "";
   var selectedTagsId = "";
   var selectedDueDateFinal = "";
 
-  var selectedFilterData = FilterMenuGetSet(idStatic: "",nameStatic: "");
+  var selectedFilterData = FilterMenuGetSet(idStatic: "",nameStatic: "All");
+
 
   @override
   void initState() {
@@ -106,7 +109,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
       children: [
         GestureDetector(
           onTap: () {
-            // Navigator.pop(context);
+             Navigator.pop(context);
           },
           child: Container(
               decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueDark),
@@ -123,19 +126,23 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
             style: titleFontNormal(white, 20),
           ),
         ),
-        Visibility(
-          visible: sessionManager.getIsHOD().toString().trim() == "1",
-          child: GestureDetector(
-            onTap: () {
+        GestureDetector(
+          onTap: () {
+            if(checkValidString(checkRights("my_tasks").addRights) == "1")
+            {
               _redirectToAdd(false,TaskListData());
-            },
-            child: Container(
-                decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueDark),
-                height: 42,
-                width: 42,
-                padding: const EdgeInsets.all(13),
-                child: Image.asset('assets/images/ic_add.png', height: 28, width: 28)),
-          ),
+            }
+            else
+            {
+              showToast("You are not allowed to use this features", context);
+            }
+          },
+          child: Container(
+              decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueDark),
+              height: 42,
+              width: 42,
+              padding: const EdgeInsets.all(13),
+              child: Image.asset('assets/images/ic_add.png', height: 28, width: 28)),
         ),
       ],
     );
@@ -167,6 +174,9 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
             },
             style: editTextStyleWhite(),
             onChanged: (value) {
+              setState(() {
+                searchText = value;
+              });
             },
             decoration: InputDecoration(
               fillColor: blueDark,
@@ -277,20 +287,16 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                             borderRadius: BorderRadius.circular(kButtonCornerRadius8), side: const BorderSide(color: blueNormal, width: 0.7)),
                       ),
                       backgroundColor:
-                          listStatus[index].selected! ? MaterialStateProperty.all<Color>(blueNormal) : MaterialStateProperty.all<Color>(white)),
+                          listStatus[index].id.toString() == statusID ? MaterialStateProperty.all<Color>(blueNormal) : MaterialStateProperty.all<Color>(white)),
                   onPressed: () {
-                    if (listStatus[index].selected! == false)
+                    if (listStatus[index].id.toString() != statusID)
                     {
                       setState(() {
-                        statusID = "";
-                        for (var n = 0; n < listStatus.length; n++) {
-                          if (n == index) {
-                            statusID = checkValidString(listStatus[n].id);
-                            listStatus[n].selected = true;
-                          } else {
-                            listStatus[n].selected = false;
-                          }
-                        }
+                        statusID = listStatus[index].id.toString();
+                        whereOption = "Status";
+                        selectedFilterData.id = statusID;
+                        selectedFilterData.name = listStatus[index].name.toString();
+                        isOrNotOption = 'Is';
                       });
 
                       if(isOnline)
@@ -304,7 +310,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                     }
                   },
                   child: Text(checkValidString(toDisplayCase(listStatus[index].name.toString().trim())),
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: listStatus[index].selected! ? white : blueNormal)),
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: listStatus[index].id.toString() == statusID ? white : blueNormal)),
                 ),
               )),
     );
@@ -326,7 +332,14 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        _redirectToAdd(true,listTask[index]);
+        if(checkValidString(checkRights("my_tasks").viewRights) == "1")
+        {
+          _redirectToAdd(true,listTask[index]);
+        }
+        else
+        {
+          showToast("You are not allowed to use this features", context);
+        }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -422,10 +435,20 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
               children: [
                 Container(
                   decoration: BoxDecoration(color: assignBg, borderRadius: BorderRadius.circular(22)),
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(left: 8,right: 8,top: 5,bottom: 5),
                   child: Row(
                     children: [
-                      Gap(20),
+                      SizedBox(
+                        height: 28,
+                        width: 28,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(28),
+                          //Profile Image
+                          child: Image.network(
+                              fit: BoxFit.cover, checkValidString(listTask[index].userAssignTo!.profilePicFull).toString().isNotEmpty ? checkValidString(listTask[index].userAssignTo!.profilePicFull).toString() : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
+                        ),
+                      ),
+                      Gap(5),
                       Text(toDisplayCase(checkValidString(listTask[index].userAssignTo!.name)), style: font16(assignText)),
                       Gap(5)
                     ],
@@ -464,11 +487,11 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
         try {
           if (dataResponse.data != null) {
             if (dataResponse.data!.isNotEmpty) {
-              var allObj = TaskStatusData(id: "", name: "All", color: "", sort: "", createdAt: "", selected: true);
+              var allObj = FilterMenuGetSet(idStatic: "",nameStatic: "All");
               listStatus.add(allObj);
               for (var n = 0; n < dataResponse.data!.length; n++) {
                 dataResponse.data![n].selected = false;
-                listStatus.add(dataResponse.data![n]);
+                listStatus.add(FilterMenuGetSet(idStatic: checkValidString(dataResponse.data![n].id), nameStatic: checkValidString(dataResponse.data![n].name)));
               }
             }
           }
@@ -627,14 +650,14 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
         'logged_in_user_id': sessionManager.getId().toString(),
         'from_app': IS_FROM_APP,
         'search' : searchText,
-        'status_ids' : statusID.isNotEmpty ? statusID : "",
-        'status_is_or_not' : statusID.isNotEmpty ? "1" : "0",
+        'status_ids' : statusID,
+        'status_is_or_not' : (whereOption == "Status" && isOrNotOption == "Is") ? "1" : "0",
         'priority_ids' : (whereOption == "Priority" && checkValidString(selectedFilterData.id).toString().isNotEmpty) ? checkValidString(selectedFilterData.id).toString().trim() : "",
-        'priority_is_or_not' : (whereOption == "Priority" && checkValidString(selectedFilterData.id).toString().isNotEmpty) ? "1" : "0",
+        'priority_is_or_not' : (whereOption == "Priority" && isOrNotOption == "Is") ? "1" : "0",
         'assignee_ids' : (whereOption == "Assignee" && checkValidString(selectedFilterData.id).toString().isNotEmpty) ? checkValidString(selectedFilterData.id).toString().trim() : "",
-        'assignee_is_or_not' : (whereOption == "Assignee" && checkValidString(selectedFilterData.id).toString().isNotEmpty) ? "1" : "0",
+        'assignee_is_or_not' : (whereOption == "Assignee" && isOrNotOption == "Is") ? "1" : "0",
         'tag_ids' : (whereOption == "Tags" && checkValidString(selectedFilterData.id).toString().isNotEmpty) ? checkValidString(selectedFilterData.id).toString().trim() : "",
-        'tag_is_or_not' :(whereOption == "Tags" && checkValidString(selectedFilterData.id).toString().isNotEmpty) ? "1" : "0",
+        'tag_is_or_not' :(whereOption == "Tags" && isOrNotOption == "Is") ? "1" : "0",
         'due_date' : (whereOption == "Due Date" && selectedDueDateFinal.toString().isNotEmpty) ? getTimeStampDate(selectedDueDateFinal.trim(), "dd MMM, yyyy").toString() : "",
        };
 
@@ -672,7 +695,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
   Future<void> _redirectToAdd(bool isFrom, TaskListData taskListData) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => isFrom ? UpdateTaskScreen(taskListData,listPriority) : AddTaskScreen(listPriority)),
+      MaterialPageRoute(builder: (context) => isFrom ? TaskDetailPage(taskListData,listPriority) : AddTaskScreen(listPriority)),
     );
     print("result ===== $result");
     if (result == "success") {
@@ -688,6 +711,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
   Future<dynamic> filterTaskPopup() {
     _whereController.text = whereOption;
     _isController.text = isOrNotOption;
+    _selectOptionController.text = checkValidString(selectedFilterData.name);
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
@@ -742,37 +766,29 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        if(whereOption.isEmpty)
+                                        Navigator.pop(context);
+                                        setState(() {
+                                          statusID = "";
+                                          whereOption = "Status";
+                                          selectedFilterData.id = "";
+                                          selectedFilterData.name = "All";
+                                          isOrNotOption = 'Is';
+                                        });
+                                        if(isOnline)
                                         {
-                                            showToast("Please select where", context);
-                                        }
-                                        else if(isOrNotOption.isEmpty)
-                                        {
-                                          showToast("Please select IS", context);
-                                        }
-                                        else if(checkValidString(selectedFilterData.id).toString().isEmpty)
-                                        {
-                                          showToast("Please select option", context);
+                                          _getTaskListDataFromAPI();
                                         }
                                         else
                                         {
-                                          Navigator.pop(context);
-                                            if(isOnline)
-                                            {
-                                              _getTaskListDataFromAPI();
-                                            }
-                                            else
-                                            {
-                                              showToast("Please check your internet connection!", context);
-                                            }
+                                          showToast("Please check your internet connection!", context);
                                         }
                                       },
                                       child: const Text(
-                                        "Save",
+                                        "Clear",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(fontSize: 20, fontFamily: otherFont, color: black, fontWeight: FontWeight.w400),
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ],
@@ -903,7 +919,11 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                                  onTap: () {
                                    if(whereOption.isNotEmpty)
                                    {
-                                       if(whereOption == "Priority")
+                                       if(whereOption == "Status")
+                                       {
+                                         filterSelectOption(listStatus, 'Select Status',_selectOptionController);
+                                       }
+                                      else if(whereOption == "Priority")
                                        {
                                          filterSelectOption(listPriorityFilter, 'Select Priority',_selectOptionController);
                                        }
@@ -961,7 +981,53 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                                    hintStyle: const TextStyle(color: editTextColor, fontSize: 16, fontFamily: otherFont, fontWeight: FontWeight.w400),
                                  ),
                                ),
-                               const Gap(32),
+                               Container(
+                                 margin: const EdgeInsets.only(left: 10, right: 10,top: 22,bottom: 22),
+                                 width: MediaQuery.of(context).size.width,
+                                 child: TextButton(
+                                     style: ButtonStyle(
+                                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                           RoundedRectangleBorder(
+                                             borderRadius: BorderRadius.circular(kButtonCornerRadius),
+                                           ),
+                                         ),
+                                         backgroundColor: MaterialStateProperty.all<Color>(blueNormal)),
+                                     onPressed: () async {
+                                       FocusScope.of(context).requestFocus(FocusNode());
+                                       if(whereOption.isEmpty)
+                                       {
+                                         showToast("Please select where", context);
+                                       }
+                                       else if(isOrNotOption.isEmpty)
+                                       {
+                                         showToast("Please select IS", context);
+                                       }
+                                       else if(whereOption != "Due Date" && checkValidString(selectedFilterData.id).toString().isEmpty)
+                                       {
+                                         showToast("Please select option", context);
+                                       }
+                                       else
+                                       {
+                                         Navigator.pop(context);
+                                         if(isOnline)
+                                         {
+                                           _getTaskListDataFromAPI();
+                                         }
+                                         else
+                                         {
+                                           showToast("Please check your internet connection!", context);
+                                         }
+                                       }
+                                     },
+                                     child: Padding(
+                                       padding: const EdgeInsets.only(top: 8, bottom: 8),
+                                       child: const Text(
+                                         "Apply",
+                                         textAlign: TextAlign.center,
+                                         style: TextStyle(fontSize: 16, fontFamily: otherFont, color: white, fontWeight: FontWeight.w600),
+                                       ),
+                                     )),
+                               ),
                              ],
                            ),)
                         ],
@@ -981,7 +1047,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
       context: context,
       builder: (context) {
         return Builder(builder: (context) {
-          return StatefulBuilder(
+          return StatefulBuilder (
               builder: (BuildContext context, StateSetter setState) {
                 return Wrap(
                   children: [
@@ -1241,6 +1307,16 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                                   behavior: HitTestBehavior.translucent,
                                   onTap: () {
                                     setState(() {
+
+                                      if(whereOption == "Status")
+                                      {
+                                        statusID = checkValidString(options[index].id.toString());
+                                      }
+                                      else
+                                      {
+                                        statusID = "";
+                                      }
+
                                       selectedFilterData.id = checkValidString(options[index].id.toString());
                                       selectedFilterData.name = checkValidString(options[index].name.toString());
                                       textController.text = toDisplayCase(selectedFilterData.name);
@@ -1325,5 +1401,6 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
   void castStatefulWidget() {
     widget is MyTaskListScreen;
   }
+
 
 }

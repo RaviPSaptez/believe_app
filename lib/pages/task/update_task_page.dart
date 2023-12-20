@@ -73,19 +73,19 @@ class _AddTaskScreenState extends BaseState<UpdateTaskScreen> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: blueDark,
+      statusBarColor: blueNormal,
       statusBarIconBrightness: Brightness.light, // For Android (dark icons)
       statusBarBrightness: Brightness.light,
     ));
     return Scaffold(
-        backgroundColor: blueDark,
+        backgroundColor: blueNormal,
         resizeToAvoidBottomInset: true,
         body: Padding(
           padding: const EdgeInsets.only(bottom: 0),
           child: Stack(
             children: [
               Container(
-                  decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueNormal),
+                  decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueDark),
                   height: MediaQuery.of(context).size.height * 0.9,
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.only(top: 60, bottom: 60, left: 18, right: 18)),
@@ -570,7 +570,17 @@ class _AddTaskScreenState extends BaseState<UpdateTaskScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Gap(50),
+                    SizedBox(
+                      height: 36,
+                      width: 36,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(28),
+                        //Profile Image
+                        child: Image.network(
+                            fit: BoxFit.cover, checkValidString(listDepartmentWiseUserListSelected[index].profilePicFull).toString().isNotEmpty ? checkValidString(listDepartmentWiseUserListSelected[index].profilePicFull).toString() : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
+                      ),
+                    ),
+                    Gap(12),
                     Expanded(
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

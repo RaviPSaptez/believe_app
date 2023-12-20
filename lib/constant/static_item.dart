@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 class StaticItemList {
   static List<String> whereOptionTask = [
+    'Status',
     'Priority',
     'Assignee',
     'Tags',

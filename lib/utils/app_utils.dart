@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:believe_app/utils/session_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constant/colors.dart';
+import '../model/login/VerifyOtpResponseModel.dart';
 
 
 /*show message to user*/
@@ -391,6 +393,23 @@ String toDisplayCase(String value) {
   } else {
     return "";
   }
+}
+
+ModuleRights checkRights(String type) {
+  SessionManager sessionManager = SessionManager();
+  var listItem =  sessionManager.getPermissions();
+  var moduleRights = ModuleRights();
+  if (listItem.isNotEmpty)
+  {
+    for (int i = 0; i < listItem.length; i++) {
+      if(listItem[i].type == type)
+      {
+        moduleRights = listItem[i];
+      }
+    }
+  }
+
+  return moduleRights;
 }
 
 showToast(String? message, BuildContext? context) {

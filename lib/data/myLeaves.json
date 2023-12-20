@@ -1,0 +1,79 @@
+{
+  "leaves": {
+    "Causal": [
+      {
+        "type": "Causal",
+        "title": "Causal Leave",
+        "description": "Hello Sir, Planning to travel with family in this diwali.Applying for 03 days leave, Request you to please approve my leave.",
+        "days": 2,
+        "dateFrom": "2023-12-01",
+        "dateTo": "2023-12-06",
+        "status": "Approved"
+      },
+      {
+        "type": "Causal",
+        "title": "Causal Leave",
+        "description": "Hello Sir, Planning to attend my friend’s birthday party. Request you to please approve my leave.",
+        "days": 2,
+        "dateFrom": "2023-12-01",
+        "dateTo": "2023-12-02",
+        "status": "Approved"
+      }
+    ],
+    "Sick": [
+      {
+        "type": "Sick",
+        "title": "Sick Leave",
+        "description": "Reason for Absence",
+        "days": 3,
+        "dateFrom": "2023-12-03",
+        "dateTo": "2023-12-05",
+        "status": "Pending"
+      }
+    ],
+    "Maternity": [
+      {
+        "type": "Maternity",
+        "title": "Maternity Leave",
+        "description": "Reason for Absence",
+        "days": 90,
+        "dateFrom": "2023-12-06",
+        "dateTo": "2023-03-05",
+        "status": "Approved"
+      }
+    ],
+    "Marriage": [
+      {
+        "type": "Marriage",
+        "title": "Marriage Leave",
+        "description": "Reason for Absence",
+        "days": 10,
+        "dateFrom": "2023-12-10",
+        "dateTo": "2023-12-19",
+        "status": "Rejected"
+      }
+    ],
+    "Paternity": [
+      {
+        "type": "Paternity",
+        "title": "Paternity Leave",
+        "description": "Reason for Absence",
+        "days": 15,
+        "dateFrom": "2023-12-20",
+        "dateTo": "2023-12-29",
+        "status": "Pending"
+      }
+    ],
+    "Travel": [
+      {
+        "type": "Travel",
+        "title": "Travel Leave",
+        "description": "Hello Sir, Planning to travel with my friends. Applying for 07 days leave, Request you to please approve my leave. Hello Sir, Planning to travel with my friends. Applying for\n07 days leave, Request you to please approve my leave. Hello Sir, Planning to travel with my friends. Applying for 07 days leave, Request you to please approve my leave. ",
+        "days": 15,
+        "dateFrom": "2023-12-20",
+        "dateTo": "2023-12-23",
+        "status": "Pending"
+      }
+    ]
+  }
+}

@@ -231,29 +231,38 @@ String userAssignToToJson(UserAssignTo data) => json.encode(data.toJson());
 class UserAssignTo {
   UserAssignTo({
       String? userId, 
-      String? name,}){
+      String? name,
+      String? profilePicFull,
+  }){
     _userId = userId;
     _name = name;
+    _profilePicFull = profilePicFull;
 }
 
   UserAssignTo.fromJson(dynamic json) {
     _userId = json['user_id'];
     _name = json['name'];
+    _profilePicFull = json['profile_pic_full'];
   }
   String? _userId;
   String? _name;
+  String? _profilePicFull;
 UserAssignTo copyWith({  String? userId,
   String? name,
+  String? profilePicFull
 }) => UserAssignTo(  userId: userId ?? _userId,
   name: name ?? _name,
+    profilePicFull : profilePicFull ?? _profilePicFull
 );
   String? get userId => _userId;
   String? get name => _name;
+  String? get profilePicFull => _profilePicFull;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['user_id'] = _userId;
     map['name'] = _name;
+    map['profile_pic_full'] = _profilePicFull;
     return map;
   }
 
