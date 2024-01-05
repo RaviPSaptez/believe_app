@@ -12,13 +12,14 @@ import '../../model/login/SendOTPResponseModel.dart';
 import '../../model/login/VerifyOtpResponseModel.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/base_class.dart';
-import '../home.dart';
+import '../tabs/dashboard_menu.dart';
+import '../tabs/home.dart';
 
 class VerifyOTPScreen extends StatefulWidget {
   String mobileNumber;
   String userId;
 
-  VerifyOTPScreen(this.mobileNumber,this.userId, {Key? key}) : super(key: key);
+  VerifyOTPScreen(this.mobileNumber, this.userId, {Key? key}) : super(key: key);
 
   @override
   _VerifyOTPScreen createState() => _VerifyOTPScreen();
@@ -222,22 +223,14 @@ class _VerifyOTPScreen extends BaseState<VerifyOTPScreen> {
                               if (!_isLoading) {
                                 FocusScope.of(context).requestFocus(FocusNode());
                                 String contact = otpController.text.toString().trim();
-                                if (contact.isEmpty)
-                                {
+                                if (contact.isEmpty) {
                                   showSnackBar("Please enter a OTP", context);
-                                }
-                                else if (contact.length != 4)
-                                {
+                                } else if (contact.length != 4) {
                                   showSnackBar("Please enter valid OTP", context);
-                                }
-                                else
-                                {
-                                  if (isOnline)
-                                  {
+                                } else {
+                                  if (isOnline) {
                                     _verifyOTPCall();
-                                  }
-                                  else
-                                  {
+                                  } else {
                                     noInterNet(context);
                                   }
                                 }
@@ -310,46 +303,34 @@ class _VerifyOTPScreen extends BaseState<VerifyOTPScreen> {
   }
 
   _getOTPFromAPI() async {
-    if(isOnline)
-      {
-        HttpWithMiddleware http = HttpWithMiddleware.build(middlewares: [
-          HttpLogger(logLevel: LogLevel.BODY),
-        ]);
+    if (isOnline) {
+      HttpWithMiddleware http = HttpWithMiddleware.build(middlewares: [
+        HttpLogger(logLevel: LogLevel.BODY),
+      ]);
 
-        final url = Uri.parse(API_URL + login);
-        Map<String, String> jsonBody =
-        {
-          'user_id': userId,
-          'call_app': CALL_APP,
-          'from_app': IS_FROM_APP
-        };
+      final url = Uri.parse(API_URL + login);
+      Map<String, String> jsonBody = {'user_id': userId, 'call_app': CALL_APP, 'from_app': IS_FROM_APP};
 
-        final response = await http.post(url, body: jsonBody, headers: {
-          "Authorization": API_Token,
-        });
+      final response = await http.post(url, body: jsonBody, headers: {
+        "Authorization": API_Token,
+      });
 
-        final statusCode = response.statusCode;
-        final body = response.body;
-        Map<String, dynamic> user = jsonDecode(body);
-        var dataResponse = SendOtpResponseModel.fromJson(user);
-        if (statusCode == 200 && dataResponse.success == 1)
-        {
-          try
-          {
-            userId = checkValidString(dataResponse.userId);
-          }
-          catch (e)
-          {
-            print(e);
-          }
-        } else {
-          showSnackBar(dataResponse.message, context);
+      final statusCode = response.statusCode;
+      final body = response.body;
+      Map<String, dynamic> user = jsonDecode(body);
+      var dataResponse = SendOtpResponseModel.fromJson(user);
+      if (statusCode == 200 && dataResponse.success == 1) {
+        try {
+          userId = checkValidString(dataResponse.userId);
+        } catch (e) {
+          print(e);
         }
+      } else {
+        showSnackBar(dataResponse.message, context);
       }
-    else
-      {
-        noInterNet(context);
-      }
+    } else {
+      noInterNet(context);
+    }
   }
 
   _verifyOTPCall() async {
@@ -362,13 +343,7 @@ class _VerifyOTPScreen extends BaseState<VerifyOTPScreen> {
 
     final url = Uri.parse(API_URL + verifyOTP);
 
-    Map<String, String> jsonBody =
-    {
-      'user_id': userId,
-      'call_app': CALL_APP,
-      'from_app': IS_FROM_APP,
-      'otp' : strPin
-    };
+    Map<String, String> jsonBody = {'user_id': userId, 'call_app': CALL_APP, 'from_app': IS_FROM_APP, 'otp': strPin};
 
     final response = await http.post(url, body: jsonBody, headers: {
       "Authorization": API_Token,
@@ -379,18 +354,14 @@ class _VerifyOTPScreen extends BaseState<VerifyOTPScreen> {
     Map<String, dynamic> user = jsonDecode(body);
     var dataResponse = VerifyOtpResponseModel.fromJson(user);
     if (statusCode == 200 && dataResponse.success == 1) {
-      try
-      {
+      try {
         sessionManager.setIsLoggedIn(true);
         sessionManager.createLoginSession(dataResponse.data);
-        if (dataResponse.data?.moduleRights != null)
-        {
+        if (dataResponse.data?.moduleRights != null) {
           await sessionManager.setPermissions(dataResponse.data?.moduleRights ?? []);
         }
         openNextPage();
-      }
-      catch (e)
-      {
+      } catch (e) {
         print(e);
       }
       setState(() {
@@ -410,6 +381,9 @@ class _VerifyOTPScreen extends BaseState<VerifyOTPScreen> {
   }
 
   void openNextPage() {
-    startActivity(context, const HomeScreen());
+    Timer(
+        const Duration(milliseconds: 200),
+        () => Navigator.pushAndRemoveUntil(
+            context, MaterialPageRoute(builder: (context) => const DashboardWithMenuScreen()), (Route<dynamic> route) => false));
   }
 }

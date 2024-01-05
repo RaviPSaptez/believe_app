@@ -1,11 +1,11 @@
-import 'package:believe_app/pages/storage_folder_screen.dart';
+import 'package:believe_app/pages/storage/storage_folder_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
-import '../constant/colors.dart';
-import '../data/model/storage_models.dart';
-import '../utils/app_utils.dart';
+import '../../constant/colors.dart';
+import '../../model/storage/storage_models.dart';
+import '../../utils/app_utils.dart';
 
 class StorageScreen extends StatefulWidget {
   const StorageScreen({super.key});

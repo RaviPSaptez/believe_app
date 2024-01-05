@@ -1,26 +1,26 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_http_logger/pretty_http_logger.dart';
-import '../constant/api_end_point.dart';
-import '../constant/colors.dart';
-import '../data/model/filter_model.dart';
-import '../data/model/leave_list_model.dart';
-import '../data/model/leave_type_model.dart' as leave_types;
-import '../data/model/leave_type_model.dart';
-import '../data/model/my_leave_model.dart';
-import '../utils/app_utils.dart';
-import '../utils/base_class.dart';
-import '../widget/loading.dart';
-import '../widget/no_data.dart';
+import '../../constant/api_end_point.dart';
+import '../../constant/colors.dart';
+import '../../constant/global_context.dart';
+import '../../model/other/filter_model.dart';
+import '../../model/leave/leave_list_model.dart';
+import '../../model/leave/leave_type_model.dart';
+import '../../utils/app_utils.dart';
+import '../../utils/base_class.dart';
+import '../../widget/loading.dart';
+import '../../widget/no_data.dart';
+import '../tabs/dashboard_menu.dart';
 import 'apply_leave.dart';
 
 class LeavesScreen extends StatefulWidget {
-  const LeavesScreen({Key? key}) : super(key: key);
+  bool isFromNotification = false;
+  LeavesScreen({this.isFromNotification = false,Key? key}) : super(key: key);
 
   @override
   _LeavesScreenState createState() => _LeavesScreenState();
@@ -41,9 +41,11 @@ class _LeavesScreenState extends BaseState<LeavesScreen> {
   List<LeaveTypeData> leaveTypes = List<LeaveTypeData>.empty(growable: true);
   List<LeaveListData> listLeave = List<LeaveListData>.empty(growable: true);
   final ScrollController _scrollViewController = ScrollController();
+  bool isFromNotification = false;
 
   @override
   void initState() {
+    isFromNotification = (widget as LeavesScreen).isFromNotification;
     conditions = [
       Condition(name: 'Is', id: 1),
       Condition(name: 'Is Not', id: 0),
@@ -81,37 +83,52 @@ class _LeavesScreenState extends BaseState<LeavesScreen> {
       statusBarBrightness: Brightness.light,
     ));
 
-    return Scaffold(
-      backgroundColor: themePurple,
-      appBar: AppBar(
-          toolbarHeight: 110,
-          automaticallyImplyLeading: false,
-          backgroundColor: themePurple,
-          elevation: 0,
-          titleSpacing: 12,
-          centerTitle: false,
-          title: Column(
-            children: [appBar(context), const Gap(12), searchBar()],
-          )),
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 0),
-        child: Container(
-            decoration:
-                const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: white),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(top: 20),
-            child: _isLoading
-                ? const LoadingWidget()
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      leaveTypeListWidget(),
-                      Expanded(child: listLeave.isNotEmpty ? leaveListWidget() : const MyNoDataWidget(msg: "No data found!"))
-                    ],
-                  )),
+    return WillPopScope(
+      onWillPop: () {
+        if(isFromNotification)
+        {
+          NavigationService.notif_type = "";
+          NavigationService.notif_content_id = "";
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) =>  DashboardWithMenuScreen()), (Route<dynamic> route) => false);
+        }
+        else {
+          Navigator.pop(context);
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+        backgroundColor: themePurple,
+        appBar: AppBar(
+            toolbarHeight: 110,
+            automaticallyImplyLeading: false,
+            backgroundColor: themePurple,
+            elevation: 0,
+            titleSpacing: 12,
+            centerTitle: false,
+            title: Column(
+              children: [appBar(context), const Gap(12), searchBar()],
+            )),
+        body: Padding(
+          padding: const EdgeInsets.only(bottom: 0),
+          child: Container(
+              decoration:
+                  const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: white),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(top: 20),
+              child: _isLoading
+                  ? const LoadingWidget()
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        leaveTypeListWidget(),
+                        Expanded(child: listLeave.isNotEmpty ? leaveListWidget() : const MyNoDataWidget(msg: "No data found!"))
+                      ],
+                    )),
+        ),
       ),
     );
   }
@@ -122,8 +139,17 @@ class _LeavesScreenState extends BaseState<LeavesScreen> {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.pop(context);
-          },
+            if(isFromNotification)
+              {
+                NavigationService.notif_type = "";
+                NavigationService.notif_content_id = "";
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) =>  DashboardWithMenuScreen()), (Route<dynamic> route) => false);
+              }
+            else {
+              Navigator.pop(context);
+            }
+           },
           child: Container(
               decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: themePurpleDark),
               height: 42,
@@ -781,7 +807,7 @@ class _LeavesScreenState extends BaseState<LeavesScreen> {
                                     _selectedTypeId = options[index].id;
                                   }
                                   
-                                  if (type == 'Condition') {
+                                  if (type == 'Is') {
                                     _selectedCondition = value;
                                   }
                                   
@@ -991,6 +1017,7 @@ class _LeavesScreenState extends BaseState<LeavesScreen> {
   }
 
   Future<void> _redirectToAdd(bool isFrom, LeaveListData listData) async {
+    hideKeyboard(context);
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ApplyLeaveScreen()),

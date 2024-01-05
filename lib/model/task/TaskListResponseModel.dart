@@ -1,8 +1,8 @@
 import 'dart:convert';
-/// data : [{"id":"2","title":"api for believes","description":"api descriptions","sub_description":"check all right","priority":{"id":"1","name":"Urgent","color":"#F17771","flag":"https://demo1.saptez.com/believeapp/api/assets/priority/1.png"},"status":{"id":"1","name":"New","color":"#37DDF0"},"created_at_date_time":{"date":"08 Dec, 2023","time":"06:47 PM"},"user_assign_to":{"user_id":"2","name":"vrushik patel"},"user_created_task":{"user_id":"1","name":"vrushik patel"},"tags_comma":"web,app,both","tags_array":["web","app","both"]}]
+/// data : [{"id":"10","title":"Task No 1","description":"task no 1 test description","sub_description":"","priority":{"id":"1","name":"Urgent","color":"#F17771","flag":"https://demo1.saptez.com/believeapp/api/assets/priority/1.png"},"status":{"id":"1","name":"New","color":"#37DDF0"},"status_update_values":{"text":"Mark as Doing","status_id":"2","approve_text":{"text":"","status_id":"","text_1":"","status_id_1":""}},"created_at_date_time":{"date":"13 Dec, 2023","time":"12:57 PM"},"due_date_time":{"date":"13 Dec, 2023","time":"12:56 AM"},"user_assign_to":{"user_id":"","name":"","profile_pic_full":""},"user_created_task":{"user_id":"1","name":"vrushik patel"},"tags_comma":"task,demo","tags_array":["task","demo"]}]
 /// success : 1
 /// message : "Records found."
-/// total_records : 2
+/// total_records : 1
 
 TaskListResponseModel taskListResponseModelFromJson(String str) => TaskListResponseModel.fromJson(json.decode(str));
 String taskListResponseModelToJson(TaskListResponseModel data) => json.encode(data.toJson());
@@ -60,17 +60,19 @@ TaskListResponseModel copyWith({  List<TaskListData>? data,
 
 }
 
-/// id : "2"
-/// title : "api for believes"
-/// description : "api descriptions"
-/// sub_description : "check all right"
+/// id : "10"
+/// title : "Task No 1"
+/// description : "task no 1 test description"
+/// sub_description : ""
 /// priority : {"id":"1","name":"Urgent","color":"#F17771","flag":"https://demo1.saptez.com/believeapp/api/assets/priority/1.png"}
 /// status : {"id":"1","name":"New","color":"#37DDF0"}
-/// created_at_date_time : {"date":"08 Dec, 2023","time":"06:47 PM"}
-/// user_assign_to : {"user_id":"2","name":"vrushik patel"}
+/// status_update_values : {"text":"Mark as Doing","status_id":"2","approve_text":{"text":"","status_id":"","text_1":"","status_id_1":""}}
+/// created_at_date_time : {"date":"13 Dec, 2023","time":"12:57 PM"}
+/// due_date_time : {"date":"13 Dec, 2023","time":"12:56 AM"}
+/// user_assign_to : {"user_id":"","name":"","profile_pic_full":""}
 /// user_created_task : {"user_id":"1","name":"vrushik patel"}
-/// tags_comma : "web,app,both"
-/// tags_array : ["web","app","both"]
+/// tags_comma : "task,demo"
+/// tags_array : ["task","demo"]
 
 TaskListData dataFromJson(String str) => TaskListData.fromJson(json.decode(str));
 String dataToJson(TaskListData data) => json.encode(data.toJson());
@@ -82,7 +84,9 @@ class TaskListData {
       String? subDescription, 
       Priority? priority, 
       Status? status, 
+      StatusUpdateValues? statusUpdateValues, 
       CreatedAtDateTime? createdAtDateTime, 
+      DueDateTime? dueDateTime, 
       UserAssignTo? userAssignTo, 
       UserCreatedTask? userCreatedTask, 
       String? tagsComma, 
@@ -93,7 +97,9 @@ class TaskListData {
     _subDescription = subDescription;
     _priority = priority;
     _status = status;
+    _statusUpdateValues = statusUpdateValues;
     _createdAtDateTime = createdAtDateTime;
+    _dueDateTime = dueDateTime;
     _userAssignTo = userAssignTo;
     _userCreatedTask = userCreatedTask;
     _tagsComma = tagsComma;
@@ -107,7 +113,9 @@ class TaskListData {
     _subDescription = json['sub_description'];
     _priority = json['priority'] != null ? Priority.fromJson(json['priority']) : null;
     _status = json['status'] != null ? Status.fromJson(json['status']) : null;
+    _statusUpdateValues = json['status_update_values'] != null ? StatusUpdateValues.fromJson(json['status_update_values']) : null;
     _createdAtDateTime = json['created_at_date_time'] != null ? CreatedAtDateTime.fromJson(json['created_at_date_time']) : null;
+    _dueDateTime = json['due_date_time'] != null ? DueDateTime.fromJson(json['due_date_time']) : null;
     _userAssignTo = json['user_assign_to'] != null ? UserAssignTo.fromJson(json['user_assign_to']) : null;
     _userCreatedTask = json['user_created_task'] != null ? UserCreatedTask.fromJson(json['user_created_task']) : null;
     _tagsComma = json['tags_comma'];
@@ -119,7 +127,9 @@ class TaskListData {
   String? _subDescription;
   Priority? _priority;
   Status? _status;
+  StatusUpdateValues? _statusUpdateValues;
   CreatedAtDateTime? _createdAtDateTime;
+  DueDateTime? _dueDateTime;
   UserAssignTo? _userAssignTo;
   UserCreatedTask? _userCreatedTask;
   String? _tagsComma;
@@ -130,7 +140,9 @@ TaskListData copyWith({  String? id,
   String? subDescription,
   Priority? priority,
   Status? status,
+  StatusUpdateValues? statusUpdateValues,
   CreatedAtDateTime? createdAtDateTime,
+  DueDateTime? dueDateTime,
   UserAssignTo? userAssignTo,
   UserCreatedTask? userCreatedTask,
   String? tagsComma,
@@ -141,7 +153,9 @@ TaskListData copyWith({  String? id,
   subDescription: subDescription ?? _subDescription,
   priority: priority ?? _priority,
   status: status ?? _status,
+  statusUpdateValues: statusUpdateValues ?? _statusUpdateValues,
   createdAtDateTime: createdAtDateTime ?? _createdAtDateTime,
+  dueDateTime: dueDateTime ?? _dueDateTime,
   userAssignTo: userAssignTo ?? _userAssignTo,
   userCreatedTask: userCreatedTask ?? _userCreatedTask,
   tagsComma: tagsComma ?? _tagsComma,
@@ -153,7 +167,9 @@ TaskListData copyWith({  String? id,
   String? get subDescription => _subDescription;
   Priority? get priority => _priority;
   Status? get status => _status;
+  StatusUpdateValues? get statusUpdateValues => _statusUpdateValues;
   CreatedAtDateTime? get createdAtDateTime => _createdAtDateTime;
+  DueDateTime? get dueDateTime => _dueDateTime;
   UserAssignTo? get userAssignTo => _userAssignTo;
   UserCreatedTask? get userCreatedTask => _userCreatedTask;
   String? get tagsComma => _tagsComma;
@@ -171,8 +187,14 @@ TaskListData copyWith({  String? id,
     if (_status != null) {
       map['status'] = _status?.toJson();
     }
+    if (_statusUpdateValues != null) {
+      map['status_update_values'] = _statusUpdateValues?.toJson();
+    }
     if (_createdAtDateTime != null) {
       map['created_at_date_time'] = _createdAtDateTime?.toJson();
+    }
+    if (_dueDateTime != null) {
+      map['due_date_time'] = _dueDateTime?.toJson();
     }
     if (_userAssignTo != null) {
       map['user_assign_to'] = _userAssignTo?.toJson();
@@ -223,17 +245,17 @@ UserCreatedTask copyWith({  String? userId,
 
 }
 
-/// user_id : "2"
-/// name : "vrushik patel"
+/// user_id : ""
+/// name : ""
+/// profile_pic_full : ""
 
 UserAssignTo userAssignToFromJson(String str) => UserAssignTo.fromJson(json.decode(str));
 String userAssignToToJson(UserAssignTo data) => json.encode(data.toJson());
 class UserAssignTo {
   UserAssignTo({
       String? userId, 
-      String? name,
-      String? profilePicFull,
-  }){
+      String? name, 
+      String? profilePicFull,}){
     _userId = userId;
     _name = name;
     _profilePicFull = profilePicFull;
@@ -249,10 +271,10 @@ class UserAssignTo {
   String? _profilePicFull;
 UserAssignTo copyWith({  String? userId,
   String? name,
-  String? profilePicFull
+  String? profilePicFull,
 }) => UserAssignTo(  userId: userId ?? _userId,
   name: name ?? _name,
-    profilePicFull : profilePicFull ?? _profilePicFull
+  profilePicFull: profilePicFull ?? _profilePicFull,
 );
   String? get userId => _userId;
   String? get name => _name;
@@ -268,8 +290,44 @@ UserAssignTo copyWith({  String? userId,
 
 }
 
-/// date : "08 Dec, 2023"
-/// time : "06:47 PM"
+/// date : "13 Dec, 2023"
+/// time : "12:56 AM"
+
+DueDateTime dueDateTimeFromJson(String str) => DueDateTime.fromJson(json.decode(str));
+String dueDateTimeToJson(DueDateTime data) => json.encode(data.toJson());
+class DueDateTime {
+  DueDateTime({
+      String? date, 
+      String? time,}){
+    _date = date;
+    _time = time;
+}
+
+  DueDateTime.fromJson(dynamic json) {
+    _date = json['date'];
+    _time = json['time'];
+  }
+  String? _date;
+  String? _time;
+DueDateTime copyWith({  String? date,
+  String? time,
+}) => DueDateTime(  date: date ?? _date,
+  time: time ?? _time,
+);
+  String? get date => _date;
+  String? get time => _time;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['date'] = _date;
+    map['time'] = _time;
+    return map;
+  }
+
+}
+
+/// date : "13 Dec, 2023"
+/// time : "12:57 PM"
 
 CreatedAtDateTime createdAtDateTimeFromJson(String str) => CreatedAtDateTime.fromJson(json.decode(str));
 String createdAtDateTimeToJson(CreatedAtDateTime data) => json.encode(data.toJson());
@@ -299,6 +357,107 @@ CreatedAtDateTime copyWith({  String? date,
     final map = <String, dynamic>{};
     map['date'] = _date;
     map['time'] = _time;
+    return map;
+  }
+
+}
+
+/// text : "Mark as Doing"
+/// status_id : "2"
+/// approve_text : {"text":"","status_id":"","text_1":"","status_id_1":""}
+
+StatusUpdateValues statusUpdateValuesFromJson(String str) => StatusUpdateValues.fromJson(json.decode(str));
+String statusUpdateValuesToJson(StatusUpdateValues data) => json.encode(data.toJson());
+class StatusUpdateValues {
+  StatusUpdateValues({
+      String? text, 
+      String? statusId, 
+      ApproveText? approveText,}){
+    _text = text;
+    _statusId = statusId;
+    _approveText = approveText;
+}
+
+  StatusUpdateValues.fromJson(dynamic json) {
+    _text = json['text'];
+    _statusId = json['status_id'];
+    _approveText = json['approve_text'] != null ? ApproveText.fromJson(json['approve_text']) : null;
+  }
+  String? _text;
+  String? _statusId;
+  ApproveText? _approveText;
+StatusUpdateValues copyWith({  String? text,
+  String? statusId,
+  ApproveText? approveText,
+}) => StatusUpdateValues(  text: text ?? _text,
+  statusId: statusId ?? _statusId,
+  approveText: approveText ?? _approveText,
+);
+  String? get text => _text;
+  String? get statusId => _statusId;
+  ApproveText? get approveText => _approveText;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['text'] = _text;
+    map['status_id'] = _statusId;
+    if (_approveText != null) {
+      map['approve_text'] = _approveText?.toJson();
+    }
+    return map;
+  }
+
+}
+
+/// text : ""
+/// status_id : ""
+/// text_1 : ""
+/// status_id_1 : ""
+
+ApproveText approveTextFromJson(String str) => ApproveText.fromJson(json.decode(str));
+String approveTextToJson(ApproveText data) => json.encode(data.toJson());
+class ApproveText {
+  ApproveText({
+      String? text, 
+      String? statusId, 
+      String? text1, 
+      String? statusId1,}){
+    _text = text;
+    _statusId = statusId;
+    _text1 = text1;
+    _statusId1 = statusId1;
+}
+
+  ApproveText.fromJson(dynamic json) {
+    _text = json['text'];
+    _statusId = json['status_id'];
+    _text1 = json['text_1'];
+    _statusId1 = json['status_id_1'];
+  }
+  String? _text;
+  String? _statusId;
+  String? _text1;
+  String? _statusId1;
+ApproveText copyWith({  String? text,
+  String? statusId,
+  String? text1,
+  String? statusId1,
+}) => ApproveText(  text: text ?? _text,
+  statusId: statusId ?? _statusId,
+  text1: text1 ?? _text1,
+  statusId1: statusId1 ?? _statusId1,
+);
+  String? get text => _text;
+  String? get statusId => _statusId;
+  String? get text1 => _text1;
+  String? get statusId1 => _statusId1;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['text'] = _text;
+    map['status_id'] = _statusId;
+    map['text_1'] = _text1;
+    map['status_id_1'] = _statusId1;
     return map;
   }
 

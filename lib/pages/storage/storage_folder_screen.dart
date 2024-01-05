@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constant/colors.dart';
-import '../data/model/storage_models.dart';
-import '../utils/app_utils.dart';
+import '../../constant/colors.dart';
+import '../../model/storage/storage_models.dart';
+import '../../utils/app_utils.dart';
 
 class FolderScreen extends StatefulWidget {
   final String folderName;

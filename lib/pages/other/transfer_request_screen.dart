@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../constant/colors.dart';
-import '../data/model/transfer_request_model.dart';
-import '../utils/app_utils.dart';
+import '../../constant/colors.dart';
+import '../../model/other/transfer_request_model.dart';
+import '../../utils/app_utils.dart';
 
 class TranferRequestScreen extends StatefulWidget {
   const TranferRequestScreen({super.key});

@@ -4,15 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_http_logger/pretty_http_logger.dart';
-import '../constant/api_end_point.dart';
-import '../constant/colors.dart';
-import '../data/model/leave_type_model.dart';
-import '../model/BasicResponseModel.dart';
-import '../model/leave/LeaveDurationResponse.dart';
-import '../model/task/FilterValueModel.dart';
-import '../utils/app_utils.dart';
-import '../utils/base_class.dart';
-import '../widget/loading.dart';
+import '../../constant/api_end_point.dart';
+import '../../constant/colors.dart';
+import '../../model/leave/leave_type_model.dart';
+import '../../model/other/BasicResponseModel.dart';
+import '../../model/leave/LeaveDurationResponse.dart';
+import '../../model/task/FilterValueModel.dart';
+import '../../utils/app_utils.dart';
+import '../../utils/base_class.dart';
+import '../../widget/loading.dart';
 
 class ApplyLeaveScreen extends StatefulWidget {
   const ApplyLeaveScreen({Key? key}) : super(key: key);

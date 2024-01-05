@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import '../constant/colors.dart';
-import '../utils/base_class.dart';
-import '../widget/no_data.dart';
-import 'account_informantion.dart';
+import '../../constant/colors.dart';
+import '../../utils/base_class.dart';
+import '../../widget/no_data.dart';
+import '../login/account_informantion.dart';
 
 class BlankPage extends StatefulWidget {
   const BlankPage({Key? key}) : super(key: key);

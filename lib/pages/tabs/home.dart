@@ -1,23 +1,28 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:believe_app/utils/base_class.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'account_informantion.dart';
-import 'apply_leave.dart';
-import 'blank_page.dart';
+import 'package:pretty_http_logger/pretty_http_logger.dart';
+import '../../constant/api_end_point.dart';
+import '../../model/other/BasicResponseModel.dart';
+import '../login/account_informantion.dart';
+import '../other/blank_page.dart';
 import 'dashboard.dart';
-import 'my_leave_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends BaseState<HomeScreen> {
   String selectedLabelforBottomNavigationBar = 'Home';
 
-  Widget selectedScreen() {
+  Widget selectedScreen()
+  {
     switch(selectedLabelforBottomNavigationBar){
       case 'Kudos' :
         {
@@ -32,6 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
           return const DashboardScreen();
         }
     }
+  }
+
+  @override
+  void initState()
+  {
+    super.initState();
+    getDeviceToken();
   }
 
   @override
@@ -103,5 +115,58 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> getDeviceToken() async {
+    var fcmToken = await FirebaseMessaging.instance.getToken();
+    sessionManager.setDeviceToken(fcmToken.toString());
+    print("*************** $fcmToken");
+
+    if(sessionManager.getDeviceToken().toString().trim().isNotEmpty)
+    {
+      _updateDeviceTokenData();
+    }
+  }
+
+  _updateDeviceTokenData() async {
+    HttpWithMiddleware http = HttpWithMiddleware.build(middlewares: [
+      HttpLogger(logLevel: LogLevel.BODY),
+    ]);
+
+    final url = Uri.parse(API_URL + updateDeviceToken);
+    var deviceType = "";
+    if (Platform.isIOS)
+    {
+      deviceType = "IOS";
+    }
+    else if (Platform.isWindows)
+    {
+      deviceType = "Web";
+    }
+    else
+    {
+      deviceType = "Android";
+    }
+
+    Map<String, String> jsonBody = {
+      'call_app' : CALL_APP,
+      'from_app' : IS_FROM_APP,
+      'logged_in_user_id' : sessionManager.getId().toString(),
+      'device_type': deviceType,
+      'token_id': sessionManager.getDeviceToken().toString().trim()};
+
+    final response = await http.post(url, body: jsonBody, headers: {
+      "Authorization": API_Token,
+    });
+
+    final statusCode = response.statusCode;
+    final body = response.body;
+    Map<String, dynamic> apiResponse = jsonDecode(body);
+    var dataResponse = BasicResponseModel.fromJson(apiResponse);
+
+  }
+
+  @override
+  void castStatefulWidget() {
   }
 }

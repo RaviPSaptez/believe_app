@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:pretty_http_logger/pretty_http_logger.dart';
 import '../../constant/api_end_point.dart';
 import '../../constant/colors.dart';
+import '../../constant/global_context.dart';
 import '../../constant/static_item.dart';
 import '../../model/login/VerifyOtpResponseModel.dart';
 import '../../model/task/DepartmentWiseUserResponse.dart';
@@ -20,10 +21,13 @@ import '../../model/task/UserWiseTagListResponse.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/base_class.dart';
 import '../../widget/loading.dart';
+import '../tabs/dashboard_menu.dart';
 import 'add_task_page.dart';
 
 class MyTaskListScreen extends StatefulWidget {
-  const MyTaskListScreen({Key? key}) : super(key: key);
+
+  bool isFromNotification = false;
+  MyTaskListScreen({this.isFromNotification = false,Key? key}) : super(key: key);
 
   @override
   _MyTaskListScreenState createState() => _MyTaskListScreenState();
@@ -53,10 +57,11 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
   var selectedDueDateFinal = "";
 
   var selectedFilterData = FilterMenuGetSet(idStatic: "",nameStatic: "All");
-
+  bool isFromNotification = false;
 
   @override
   void initState() {
+    isFromNotification = (widget as MyTaskListScreen).isFromNotification;
     super.initState();
     _getStatusDataFromAPI();
   }
@@ -69,39 +74,54 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
       statusBarBrightness: Brightness.light,
     ));
 
-    return Scaffold(
-        backgroundColor: blueNormal,
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-            toolbarHeight: 110,
-            automaticallyImplyLeading: false,
-            backgroundColor: blueNormal,
-            elevation: 0,
-            titleSpacing: 12,
-            centerTitle: false,
-            title: Column(
-              children: [appBar(), const Gap(12), searchViewWidget()],
-            )),
-        body: Padding(
-          padding: const EdgeInsets.only(bottom: 0),
-          child: Container(
-              decoration:
-                  const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: white),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(top: 20),
-              child: _isLoading
-                  ? const LoadingWidget()
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        taskStatusListWidget(),
-                        Expanded(child: listTask.isNotEmpty ? taskListWidget() : const MyNoDataWidget(msg: "No task found!"))
-                      ],
-                    )),
-        ));
+    return WillPopScope(
+      onWillPop: () {
+        if(isFromNotification)
+        {
+          NavigationService.notif_type = "";
+          NavigationService.notif_content_id = "";
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) =>  DashboardWithMenuScreen()), (Route<dynamic> route) => false);
+        }
+        else {
+          Navigator.pop(context);
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+          backgroundColor: blueNormal,
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+              toolbarHeight: 110,
+              automaticallyImplyLeading: false,
+              backgroundColor: blueNormal,
+              elevation: 0,
+              titleSpacing: 12,
+              centerTitle: false,
+              title: Column(
+                children: [appBar(), const Gap(12), searchViewWidget()],
+              )),
+          body: Padding(
+            padding: const EdgeInsets.only(bottom: 0),
+            child: Container(
+                decoration:
+                    const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: white),
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(top: 20),
+                child: _isLoading
+                    ? const LoadingWidget()
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          taskStatusListWidget(),
+                          Expanded(child: listTask.isNotEmpty ? taskListWidget() : const MyNoDataWidget(msg: "No task found!"))
+                        ],
+                      )),
+          )),
+    );
   }
 
   Row appBar() {
@@ -109,7 +129,16 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
       children: [
         GestureDetector(
           onTap: () {
-             Navigator.pop(context);
+            if(isFromNotification)
+            {
+              NavigationService.notif_type = "";
+              NavigationService.notif_content_id = "";
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) =>  DashboardWithMenuScreen()), (Route<dynamic> route) => false);
+            }
+            else {
+              Navigator.pop(context);
+            }
           },
           child: Container(
               decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueDark),
@@ -130,6 +159,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
           onTap: () {
             if(checkValidString(checkRights("my_tasks").addRights) == "1")
             {
+
               _redirectToAdd(false,TaskListData());
             }
             else
@@ -159,6 +189,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
             controller: _searchController,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.search,
+            autofocus: false,
             onSubmitted: (value) {
               setState(() {
                 searchText = value;
@@ -255,6 +286,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
         const Gap(12),
         GestureDetector(
           onTap: () {
+            hideKeyboard(context);
             filterTaskPopup();
           },
           child: Container(
@@ -356,9 +388,9 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                     child: Text(
                         checkValidString(listTask[index].title).toString().isNotEmpty ? toDisplayCase(checkValidString(listTask[index].title)) : "",
                         style: font16SemiBold(black))),
-                Image.asset('assets/images/ic_date.png', height: 20, width: 20),
+                Image.asset('assets/images/ic_date.png', height: 16, width: 16),
                 const Gap(4),
-                Text(checkValidString(listTask[index].createdAtDateTime!.time).toString(), style: font15(graySemiDark)),
+                Text(checkValidString(listTask[index].dueDateTime!.date).toString() + " " + checkValidString(listTask[index].dueDateTime!.time).toString(), style: font13(graySemiDark)),
               ],
             ),
             const Gap(10),
@@ -598,7 +630,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
       ]);
 
       final url = Uri.parse(API_URL + userWiseTagList);
-      Map<String, String> jsonBody = {'call_app': CALL_APP, 'from_app': IS_FROM_APP, 'user_id': sessionManager.getId().toString()};
+      Map<String, String> jsonBody = {'call_app': CALL_APP, 'from_app': IS_FROM_APP, 'logged_in_user_id': sessionManager.getId().toString()};
 
       final response = await http.post(url, body: jsonBody, headers: {
         "Authorization": API_Token,
@@ -693,6 +725,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
   }
 
   Future<void> _redirectToAdd(bool isFrom, TaskListData taskListData) async {
+    hideKeyboard(context);
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => isFrom ? TaskDetailPage(taskListData,listPriority) : AddTaskScreen(listPriority)),
@@ -753,6 +786,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                                   children: [
                                     GestureDetector(
                                       onTap: () {
+                                        hideKeyboard(context);
                                         Navigator.pop(context);
                                       },
                                       child: Padding(padding: const EdgeInsets.all(8), child: Image.asset('assets/images/ic_close.png', height: 16, width: 16, color: black)),
@@ -766,6 +800,7 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                                     ),
                                     GestureDetector(
                                       onTap: () {
+                                        FocusScope.of(context).requestFocus(FocusNode());
                                         Navigator.pop(context);
                                         setState(() {
                                           statusID = "";
@@ -1002,12 +1037,9 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                                        {
                                          showToast("Please select IS", context);
                                        }
-                                       else if(whereOption != "Due Date" && checkValidString(selectedFilterData.id).toString().isEmpty)
-                                       {
-                                         showToast("Please select option", context);
-                                       }
                                        else
                                        {
+                                         hideKeyboard(context);
                                          Navigator.pop(context);
                                          if(isOnline)
                                          {
@@ -1019,9 +1051,9 @@ class _MyTaskListScreenState extends BaseState<MyTaskListScreen>
                                          }
                                        }
                                      },
-                                     child: Padding(
-                                       padding: const EdgeInsets.only(top: 8, bottom: 8),
-                                       child: const Text(
+                                     child: const Padding(
+                                       padding: EdgeInsets.only(top: 8, bottom: 8),
+                                       child: Text(
                                          "Apply",
                                          textAlign: TextAlign.center,
                                          style: TextStyle(fontSize: 16, fontFamily: otherFont, color: white, fontWeight: FontWeight.w600),

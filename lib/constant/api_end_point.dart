@@ -8,6 +8,7 @@ const String COUNTRY_CODE = "91 ";
 //login module apis
 String login = "user/users/login";
 String verifyOTP = "user/users/verify_otp";
+String updateDeviceToken = "device_map/token/save";
 
 
 //task module apis
@@ -25,3 +26,5 @@ String leaveTypesApi = "leave/leave_type/list";
 String leaveStatusApi = "leave/leave_status/list";
 String leaveDurationApi = "leave/leave_duration/list";
 String leaveSaveApi = "leave/leave_apply/save";
+
+String menuItems = "module/module/list";

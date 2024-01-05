@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:pretty_http_logger/pretty_http_logger.dart';
 import '../../constant/api_end_point.dart';
 import '../../constant/colors.dart';
-import '../../model/BasicResponseModel.dart';
+import '../../model/other/BasicResponseModel.dart';
 import '../../model/task/DepartmentWiseUserResponse.dart';
 import '../../model/task/SubTaskResponseModel.dart';
 import '../../model/task/TaskPriorityListResponse.dart';

@@ -1,26 +1,23 @@
 import 'dart:convert';
+
 import 'package:believe_app/pages/task/my_task_list_screen.dart';
 import 'package:believe_app/pages/task/task_detail_page.dart';
-import 'package:believe_app/pages/task/update_task_page.dart';
 import 'package:believe_app/utils/app_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:loop_page_view/loop_page_view.dart';
 import 'package:pretty_http_logger/pretty_http_logger.dart';
-
-import '../constant/api_end_point.dart';
-import '../constant/colors.dart';
-import '../data/model/task_model.dart';
-import '../data/staticdata.dart';
-import '../model/task/TaskListResponseModel.dart';
-import '../model/task/TaskPriorityListResponse.dart';
-import '../utils/base_class.dart';
-import 'account_informantion.dart';
-import 'event_and_news_screen.dart';
-import 'my_leave_screen.dart';
+import '../../constant/api_end_point.dart';
+import '../../constant/colors.dart';
+import '../../constant/staticdata.dart';
+import '../../model/task/TaskListResponseModel.dart';
+import '../../model/task/TaskPriorityListResponse.dart';
+import '../../utils/base_class.dart';
+import '../event_news/event_and_news_screen.dart';
+import '../leave/my_leave_screen.dart';
+import '../login/account_informantion.dart';
 
 class DashboardScreen extends StatefulWidget {
 
@@ -345,7 +342,7 @@ class _DashboardScreenState extends BaseState<DashboardScreen> {
                   {
                     if(checkValidString(checkRights("events").viewRights) == "1")
                     {
-                      startActivity(context, const EventScreen());
+                      startActivity(context, EventScreen());
                     }
                     else
                     {
@@ -355,7 +352,7 @@ class _DashboardScreenState extends BaseState<DashboardScreen> {
                   }
                   else if(QuickLinks.linkdata[index].name.toString() == "Apply Leave")
                     {
-                      startActivity(context, const LeavesScreen());
+                      startActivity(context, LeavesScreen());
                     }
                 },
                 child: Container(
@@ -554,6 +551,7 @@ class _DashboardScreenState extends BaseState<DashboardScreen> {
       onTap: () async {
         if(checkValidString(checkRights("my_tasks").viewRights) == "1")
         {
+          hideKeyboard(context);
           List<TaskPriorityData> listPriority = List<TaskPriorityData>.empty(growable: true);
           final result = await Navigator.push(
             context,

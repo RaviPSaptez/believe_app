@@ -6,16 +6,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:pretty_http_logger/pretty_http_logger.dart';
-import '../constant/api_end_point.dart';
-import '../constant/colors.dart';
-import '../data/model/event_news_model.dart';
-import '../data/model/event_type_model.dart';
-import '../utils/app_utils.dart';
-import '../utils/base_class.dart';
+import '../../constant/api_end_point.dart';
+import '../../constant/colors.dart';
+import '../../constant/global_context.dart';
+import '../../model/eventnews/event_news_model.dart';
+import '../../model/eventnews/event_type_model.dart';
+import '../../utils/app_utils.dart';
+import '../../utils/base_class.dart';
+import '../tabs/dashboard_menu.dart';
 import 'add_event.dart';
 
 class EventScreen extends StatefulWidget {
-  const EventScreen({Key? key}) : super(key: key);
+
+  bool isFromNotification = false;
+  EventScreen({this.isFromNotification = false,Key? key}) : super(key: key);
 
   @override
   _EventScreenState createState() => _EventScreenState();
@@ -30,6 +34,7 @@ class _EventScreenState extends BaseState<EventScreen> {
   String isRSVP = 'Yes';
   List<EventNewsListItem> listEventOrNews = List<EventNewsListItem>.empty(growable: true);
   Map<String, String> isRSVPClick = {};
+  bool isFromNotification = false;
 
   void onRSVPClick(String id, String interest) {
     setState(() {
@@ -44,38 +49,53 @@ class _EventScreenState extends BaseState<EventScreen> {
       statusBarIconBrightness: Brightness.light, // For Android (dark icons)
       statusBarBrightness: Brightness.light,
     ));
-    return Scaffold(
-      backgroundColor: themePink,
-      appBar: AppBar(
-          toolbarHeight: 110,
-          automaticallyImplyLeading: false,
-          backgroundColor: themePink,
-          elevation: 0,
-          titleSpacing: 12,
-          centerTitle: false,
-          title: Column(
-            children: [appBar(context), const Gap(12), searchBar()],
-          )),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 0),
-          child: Container(
-              decoration:
-                  const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: white),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(top: 20),
-              child: _isLoading
-                  ? const LoadingWidget()
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        typeList(),
-                        Expanded(child: listEventOrNews.isNotEmpty ? listOfEvents() : const MyNoDataWidget(msg: "No task found!"))
-                      ],
-                    )),
+    return WillPopScope(
+      onWillPop: () {
+        if(isFromNotification)
+        {
+          NavigationService.notif_type = "";
+          NavigationService.notif_content_id = "";
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) =>  DashboardWithMenuScreen()), (Route<dynamic> route) => false);
+        }
+        else {
+          Navigator.pop(context);
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+        backgroundColor: themePink,
+        appBar: AppBar(
+            toolbarHeight: 110,
+            automaticallyImplyLeading: false,
+            backgroundColor: themePink,
+            elevation: 0,
+            titleSpacing: 12,
+            centerTitle: false,
+            title: Column(
+              children: [appBar(context), const Gap(12), searchBar()],
+            )),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 0),
+            child: Container(
+                decoration:
+                    const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: white),
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(top: 20),
+                child: _isLoading
+                    ? const LoadingWidget()
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          typeList(),
+                          Expanded(child: listEventOrNews.isNotEmpty ? listOfEvents() : const MyNoDataWidget(msg: "No task found!"))
+                        ],
+                      )),
+          ),
         ),
       ),
     );
@@ -83,6 +103,7 @@ class _EventScreenState extends BaseState<EventScreen> {
 
   @override
   void initState() {
+    isFromNotification = (widget as EventScreen).isFromNotification;
     types = [EventType(name: 'All', id: 0), EventType(name: 'Event', id: 1), EventType(name: 'News', id: 2)];
     _getListDataFromAPI();
     super.initState();
@@ -96,7 +117,16 @@ class _EventScreenState extends BaseState<EventScreen> {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            if(isFromNotification)
+            {
+              NavigationService.notif_type = "";
+              NavigationService.notif_content_id = "";
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) =>  DashboardWithMenuScreen()), (Route<dynamic> route) => false);
+            }
+            else {
+              Navigator.pop(context);
+            }
           },
           child: Container(
               decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: Color(0xffB50055)),
@@ -461,6 +491,7 @@ class _EventScreenState extends BaseState<EventScreen> {
   Future<void> _redirectToAdd(bool isFrom, EventNewsListItem listItem) async {
     if(checkValidString(checkRights("events").addRights) == "1")
     {
+      hideKeyboard(context);
       final result = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => AddEventScreen(isFrom,listItem)),

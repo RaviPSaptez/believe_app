@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
-import '../constant/colors.dart';
-import '../data/staticdata.dart';
-import '../utils/base_class.dart';
-import '../utils/session_manager_new.dart';
-import 'login/login_with_mobile_screen.dart';
+import '../../constant/colors.dart';
+import '../../constant/staticdata.dart';
+import '../../utils/base_class.dart';
+import '../../utils/session_manager_new.dart';
+import 'login_with_mobile_screen.dart';
 
 class AccountInfo extends StatefulWidget {
   const AccountInfo({super.key});
@@ -38,9 +38,9 @@ class _AccountInfoState extends BaseState<AccountInfo> {
                 heading('Quick Info'),
                 const SizedBox(height: 10),
                 listSection(QuickInfo.quickInfo, 'Find your Profile, lockers, tasks, leaves here.'),
-                const SizedBox(height: 30),
-                heading('Activity'),
-                listSection(ActivityData.activityInfo, 'Find announcement, events, birthday reminders, motivational quotes & kudoshere.'),
+                //const SizedBox(height: 30),
+                //heading('Activity'),
+                //listSection(ActivityData.activityInfo, 'Find announcement, events, birthday reminders, motivational quotes & kudoshere.'),
                 const SizedBox(height: 30),
                 heading('App Settings'),
                 listSection(AppSettings.settings, 'Get the best out of your believe profile.'),

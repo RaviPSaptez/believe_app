@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:pretty_http_logger/pretty_http_logger.dart';
 import '../../constant/api_end_point.dart';
 import '../../constant/colors.dart';
-import '../../model/BasicResponseModel.dart';
+import '../../model/other/BasicResponseModel.dart';
 import '../../model/task/DepartmentWiseUserResponse.dart';
 import '../../model/task/SubTaskResponseModel.dart';
 import '../../model/task/TaskPriorityListResponse.dart';
@@ -16,8 +16,7 @@ import '../../utils/app_utils.dart';
 import '../../utils/base_class.dart';
 import '../../utils/session_manager.dart';
 
-class TaskDetailPage extends StatefulWidget
-{
+class TaskDetailPage extends StatefulWidget {
   TaskListData taskListData;
   List<TaskPriorityData> listPriority = List<TaskPriorityData>.empty(growable: true);
 
@@ -60,6 +59,8 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
 
   var isSelectedAssignees = true;
 
+  String isReloadList = "";
+
   @override
   SessionManager sessionManager = SessionManager();
 
@@ -68,9 +69,8 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
     taskListData = (widget as TaskDetailPage).taskListData;
     listPriority = (widget as TaskDetailPage).listPriority;
     setUpdata();
-    if(listPriority.isEmpty)
-    {
-        _getPriorityDataFromAPI();
+    if (listPriority.isEmpty) {
+      _getPriorityDataFromAPI();
     }
     _getDepartmentWiseUserListDataFromAPI();
     super.initState();
@@ -83,272 +83,306 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
       statusBarIconBrightness: Brightness.light, // For Android (dark icons)
       statusBarBrightness: Brightness.light,
     ));
-    return Scaffold(
-        backgroundColor: blueNormal,
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-            toolbarHeight: 140,
-            automaticallyImplyLeading: false,
-            backgroundColor: blueNormal,
-            elevation: 0,
-            titleSpacing: 12,
-            centerTitle: false,
-            title: Column(
-              children: [
-                appBar(),
-                Padding(padding: EdgeInsets.only(top: 20,bottom: 20,left: 6,right: 6),
-                 child: Row(
-                   children: [
-                     Expanded(
-                         child: SizedBox(
-                             height: 42,
-                             child: TextButton(
-                               style: ButtonStyle(
-                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                     RoundedRectangleBorder(
-                                       side: const BorderSide(width: 0.5, color: white),
-                                       borderRadius: BorderRadius.circular(12),
-                                     ),
-                                   ),
-                                   backgroundColor: MaterialStateProperty.all<Color>(blueNormal)),
-                               onPressed: () {
-                               },
-                               child: const Text("Task Details", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: white)),
-                             ))),
-                     const Gap(15),
-                     Expanded(
-                         child: SizedBox(
-                             height: 42,
-                             child: TextButton(
-                               style: ButtonStyle(
-                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                     RoundedRectangleBorder(
-                                       side: const BorderSide(width: 0.5, color: blueDark),
-                                       borderRadius: BorderRadius.circular(12),
-                                     ),
-                                   ),
-                                   backgroundColor: MaterialStateProperty.all<Color>(blueDark)),
-                               onPressed: () {
-                               },
-                               child: const Text("Comments", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: white)),
-                             ))),
-                   ],
-                 ),)
-              ],
-            )),
-        body: Padding(
-          padding: const EdgeInsets.only(bottom: 0),
-          child:  Container(
-            decoration: const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: white),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Text(
-                            toDisplayCase(checkValidString(taskListData.title)),
-                            textAlign: TextAlign.start,
-                            style: font20(black),
-                          ),
-                          const Gap(16),
-                          Text(
-                            toDisplayCase(checkValidString(taskListData.description)),
-                            textAlign: TextAlign.start,
-                            style: font15(black),
-                          ),
-                          const Gap(30),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset('assets/images/ic_due_date.png', height: 22, width: 22),
-                              const Gap(10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Due Date",
-                                    textAlign: TextAlign.start,
-                                    style: font15(editTextBorder),
-                                  ),
-                                  Text(
-                                    toDisplayCase(checkValidString(taskListData.createdAtDateTime!.date.toString())) +" " + toDisplayCase(checkValidString(taskListData.createdAtDateTime!.time.toString())),
-                                    textAlign: TextAlign.start,
-                                    style: font16SemiBold(black),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          const Gap(30),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset('assets/images/ic_priority.png', height: 22, width: 22),
-                              const Gap(10),
-                              Expanded(child: Row(
-                                children: [
-                                  Expanded(child: Text(
-                                    "Priority",
-                                    textAlign: TextAlign.start,
-                                    style: font15(editTextBorder),
-                                  )),
-                                  Expanded(child: Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(28), border: Border.all(color: Color(int.parse(taskListData.priority!.color.toString().replaceAll('#', '0xff'))),width: 1)),
-                                        padding: EdgeInsets.only(left: 10,right: 8,top: 6,bottom: 6),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                                checkValidString(taskListData.priority!.name).toString().toUpperCase(),
-                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16,
-                                                    color: Color(int.parse(taskListData.priority!.color.toString().replaceAll('#', '0xff'))))),
-                                            Gap(6),
-                                            Image.asset('assets/images/ic_down_arrow.png', height: 12, width: 12,color:Color(int.parse(taskListData.priority!.color.toString().replaceAll('#', '0xff')))),
-                                          ],
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pop(context, isReloadList);
+        return Future.value(true);
+      },
+      child: Scaffold(
+          backgroundColor: blueNormal,
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+              toolbarHeight: 140,
+              automaticallyImplyLeading: false,
+              backgroundColor: blueNormal,
+              elevation: 0,
+              titleSpacing: 12,
+              centerTitle: false,
+              title: Column(
+                children: [
+                  appBar(),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20, bottom: 20, left: 6, right: 6),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: SizedBox(
+                                height: 42,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          side: const BorderSide(width: 0.5, color: white),
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
                                       ),
-                                      Expanded(child: Container())
-                                    ],
-                                  ))
-                                ],
-                              ))
-                            ],
-                          ),
-                          const Gap(30),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset('assets/images/ic_status_details.png', height: 22, width: 22),
-                              const Gap(10),
-                              Expanded(child: Row(
-                                children: [
-                                  Expanded(child: Text(
-                                    "Status",
-                                    textAlign: TextAlign.start,
-                                    style: font15(editTextBorder),
-                                  )),
-                                  Expanded(child: Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(28), border: Border.all(color: Color(int.parse(taskListData.status!.color.toString().replaceAll('#', '0xff'))),width: 1)),
-                                        padding: EdgeInsets.only(left: 10,right: 8,top: 6,bottom: 6),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                                checkValidString(taskListData.status!.name).toString().toUpperCase(),
-                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16,
-                                                    color: Color(int.parse(taskListData.status!.color.toString().replaceAll('#', '0xff'))))),
-                                            Gap(6),
-                                            Image.asset('assets/images/ic_down_arrow.png', height: 12, width: 12,color:Color(int.parse(taskListData.status!.color.toString().replaceAll('#', '0xff')))),
-                                          ],
+                                      backgroundColor: MaterialStateProperty.all<Color>(blueNormal)),
+                                  onPressed: () {},
+                                  child: const Text("Task Details", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: white)),
+                                ))),
+                        const Gap(15),
+                        Expanded(
+                            child: SizedBox(
+                                height: 42,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          side: const BorderSide(width: 0.5, color: blueDark),
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
                                       ),
-                                      Expanded(child: Container())
-                                    ],
-                                  ))
-                                ],
-                              ))
-                            ],
-                          ),
-                          const Gap(30),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset('assets/images/ic_assignees.png', height: 22, width: 22),
-                              const Gap(10),
-                              Expanded(child: Text(
-                                "Assignees",
-                                textAlign: TextAlign.start,
-                                style: font15(editTextBorder),
-                              )),
-                            ],
-                          ),
-                          Visibility(
-                              visible: listDepartmentWiseUserListSelected.isNotEmpty,
-                              child: Column(
-                                children: [const Gap(22), selectedUserList()],
-                              )),
-                          Visibility(
-                            visible: checkValidString(taskListData.subDescription).toString().isNotEmpty,
-                              child: Column(
-                            children: [
-                              const Gap(20),
-                              Text(
-                                "Sub Description",
-                                textAlign: TextAlign.start,
-                                style: font18SemiBold(black),
-                              ),
-                              const Gap(16),
-                              Text(
-                                toDisplayCase(checkValidString(taskListData.subDescription)),
-                                textAlign: TextAlign.start,
-                                style: font15(black),
-                              ),
-                            ],
-                          )),
-                          Visibility(
-                            visible: listTags.isNotEmpty,
-                            child: Column(
+                                      backgroundColor: MaterialStateProperty.all<Color>(blueDark)),
+                                  onPressed: () {},
+                                  child: const Text("Comments", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: white)),
+                                ))),
+                      ],
+                    ),
+                  )
+                ],
+              )),
+          body: Padding(
+            padding: const EdgeInsets.only(bottom: 0),
+            child: Container(
+              decoration:
+                  const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: white),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              toDisplayCase(checkValidString(taskListData.title)),
+                              textAlign: TextAlign.start,
+                              style: font20(black),
+                            ),
+                            const Gap(16),
+                            Text(
+                              toDisplayCase(checkValidString(taskListData.description)),
+                              textAlign: TextAlign.start,
+                              style: font15(black),
+                            ),
+                            const Gap(30),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const Gap(20),
-                                Row(
+                                Image.asset('assets/images/ic_due_date.png', height: 22, width: 22),
+                                const Gap(10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Due Date",
+                                      textAlign: TextAlign.start,
+                                      style: font15(editTextBorder),
+                                    ),
+                                    Text(
+                                      toDisplayCase(checkValidString(taskListData.dueDateTime!.date.toString())) +
+                                          " " +
+                                          toDisplayCase(checkValidString(taskListData.dueDateTime!.time.toString())),
+                                      textAlign: TextAlign.start,
+                                      style: font16SemiBold(black),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            const Gap(30),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset('assets/images/ic_priority.png', height: 22, width: 22),
+                                const Gap(10),
+                                Expanded(
+                                    child: Row(
                                   children: [
                                     Expanded(
                                         child: Text(
-                                          "Tags",
-                                          textAlign: TextAlign.start,
-                                          style: font18SemiBold(black),
-                                        )),
+                                      "Priority",
+                                      textAlign: TextAlign.start,
+                                      style: font15(editTextBorder),
+                                    )),
+                                    Expanded(
+                                        child: Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: white,
+                                              borderRadius: BorderRadius.circular(28),
+                                              border: Border.all(
+                                                  color: Color(int.parse(taskListData.priority!.color.toString().replaceAll('#', '0xff'))),
+                                                  width: 1)),
+                                          padding: EdgeInsets.only(left: 10, right: 8, top: 6, bottom: 6),
+                                          child: Row(
+                                            children: [
+                                              Text(checkValidString(taskListData.priority!.name).toString().toUpperCase(),
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 16,
+                                                      color: Color(int.parse(taskListData.priority!.color.toString().replaceAll('#', '0xff'))))),
+                                              Gap(6),
+                                              Image.asset('assets/images/ic_down_arrow.png',
+                                                  height: 12,
+                                                  width: 12,
+                                                  color: Color(int.parse(taskListData.priority!.color.toString().replaceAll('#', '0xff')))),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(child: Container())
+                                      ],
+                                    ))
                                   ],
-                                ),
-                                const Gap(16),
-                                Visibility(visible: listTags.isNotEmpty, child: taskTagsListWidget()),
+                                ))
                               ],
                             ),
-                          )
-                        ],
+                            const Gap(30),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset('assets/images/ic_status_details.png', height: 22, width: 22),
+                                const Gap(10),
+                                Expanded(
+                                    child: Row(
+                                  children: [
+                                    Expanded(
+                                        child: Text(
+                                      "Status",
+                                      textAlign: TextAlign.start,
+                                      style: font15(editTextBorder),
+                                    )),
+                                    Expanded(
+                                        child: Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: white,
+                                              borderRadius: BorderRadius.circular(28),
+                                              border: Border.all(
+                                                  color: Color(int.parse(taskListData.status!.color.toString().replaceAll('#', '0xff'))), width: 1)),
+                                          padding: EdgeInsets.only(left: 10, right: 8, top: 6, bottom: 6),
+                                          child: Row(
+                                            children: [
+                                              Text(checkValidString(taskListData.status!.name).toString().toUpperCase(),
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 16,
+                                                      color: Color(int.parse(taskListData.status!.color.toString().replaceAll('#', '0xff'))))),
+                                              Gap(6),
+                                              Image.asset('assets/images/ic_down_arrow.png',
+                                                  height: 12,
+                                                  width: 12,
+                                                  color: Color(int.parse(taskListData.status!.color.toString().replaceAll('#', '0xff')))),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(child: Container())
+                                      ],
+                                    ))
+                                  ],
+                                ))
+                              ],
+                            ),
+                            const Gap(30),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset('assets/images/ic_assignees.png', height: 22, width: 22),
+                                const Gap(10),
+                                Expanded(
+                                    child: Text(
+                                  "Assignees",
+                                  textAlign: TextAlign.start,
+                                  style: font15(editTextBorder),
+                                )),
+                              ],
+                            ),
+                            Visibility(
+                                visible: listDepartmentWiseUserListSelected.isNotEmpty,
+                                child: Column(
+                                  children: [const Gap(22), selectedUserList()],
+                                )),
+                            Visibility(
+                                visible: checkValidString(taskListData.subDescription).toString().isNotEmpty,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Gap(20),
+                                    Text(
+                                      "Sub Description",
+                                      textAlign: TextAlign.start,
+                                      style: font18SemiBold(black),
+                                    ),
+                                    const Gap(16),
+                                    Text(
+                                      toDisplayCase(checkValidString(taskListData.subDescription)),
+                                      textAlign: TextAlign.start,
+                                      style: font15(black),
+                                    ),
+                                  ],
+                                )),
+                            Visibility(
+                              visible: listTags.isNotEmpty,
+                              child: Column(
+                                children: [
+                                  const Gap(20),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: Text(
+                                        "Tags",
+                                        textAlign: TextAlign.start,
+                                        style: font18SemiBold(black),
+                                      )),
+                                    ],
+                                  ),
+                                  const Gap(16),
+                                  Visibility(visible: listTags.isNotEmpty, child: taskTagsListWidget()),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                    margin: const EdgeInsets.only(left: 12,right: 12,bottom: 20,top: 12),
-                    height: 55,
-                    width: MediaQuery.of(context).size.width,
-                    child: TextButton(
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              side: const BorderSide(width: 0.5, color: blueNormal),
-                              borderRadius: BorderRadius.circular(40),
+                  Container(
+                      margin: const EdgeInsets.only(left: 12, right: 12, bottom: 20, top: 12),
+                      height: 55,
+                      width: MediaQuery.of(context).size.width,
+                      child: TextButton(
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                side: const BorderSide(width: 0.5, color: blueNormal),
+                                borderRadius: BorderRadius.circular(40),
+                              ),
                             ),
-                          ),
-                          backgroundColor: MaterialStateProperty.all<Color>(blueNormal)),
-                      onPressed: () {
-                      },
-                      child: const Text("Mark as Completed", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: white)),
-                    )),
-              ],
+                            backgroundColor: MaterialStateProperty.all<Color>(blueNormal)),
+                        onPressed: () {},
+                        child: const Text("Mark as Completed", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: white)),
+                      )),
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   Row appBar() {
@@ -356,7 +390,7 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.pop(context, isReloadList);
           },
           child: Container(
               decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12)), color: blueDark),
@@ -375,21 +409,20 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
         ),
         GestureDetector(
           onTap: () async {
-            if(checkValidString(checkRights("my_tasks").addRights) == "1")
-            {
-              Navigator.pop(context);
+            if (checkValidString(checkRights("my_tasks").addRights) == "1") {
+              hideKeyboard(context);
               final result = await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => UpdateTaskScreen(taskListData,listPriority)),
+                MaterialPageRoute(builder: (context) => UpdateTaskScreen(taskListData, listPriority)),
               );
               print("result ===== $result");
               if (result == "success") {
-                setState(() {});
-                // _getTaskListDataFromAPI();
+                setState(() {
+                  isReloadList = "success";
+                });
+                _getTaskDetailsDataFromAPI();
               }
-            }
-            else
-            {
+            } else {
               showToast("You are not allowed to use this features", context);
             }
           },
@@ -398,7 +431,7 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
               height: 42,
               width: 42,
               padding: const EdgeInsets.all(13),
-              child: Image.asset('assets/images/ic_edit.png', height: 28, width: 28,color: white)),
+              child: Image.asset('assets/images/ic_edit.png', height: 28, width: 28, color: white)),
         ),
       ],
     );
@@ -493,7 +526,10 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
                         borderRadius: BorderRadius.circular(28),
                         //Profile Image
                         child: Image.network(
-                            fit: BoxFit.cover, checkValidString(listDepartmentWiseUserListSelected[index].profilePicFull).toString().isNotEmpty ? checkValidString(listDepartmentWiseUserListSelected[index].profilePicFull).toString() : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
+                            fit: BoxFit.cover,
+                            checkValidString(listDepartmentWiseUserListSelected[index].profilePicFull).toString().isNotEmpty
+                                ? checkValidString(listDepartmentWiseUserListSelected[index].profilePicFull).toString()
+                                : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
                       ),
                     ),
                     Gap(12),
@@ -956,7 +992,7 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
       ]);
 
       final url = Uri.parse(API_URL + taskPriorityList);
-      Map<String, String> jsonBody = {'call_app': CALL_APP, 'from_app': IS_FROM_APP,'logged_in_user_id' : sessionManager.getId().toString().trim()};
+      Map<String, String> jsonBody = {'call_app': CALL_APP, 'from_app': IS_FROM_APP, 'logged_in_user_id': sessionManager.getId().toString().trim()};
 
       final response = await http.post(url, body: jsonBody, headers: {
         "Authorization": API_Token,
@@ -1090,16 +1126,11 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
                 listDepartmentWiseUserList.add(dataResponse.data![n]);
               }
 
-
-              if (taskListData.userAssignTo != null)
-              {
-                if (taskListData.userAssignTo!.userId != null)
-                {
+              if (taskListData.userAssignTo != null) {
+                if (taskListData.userAssignTo!.userId != null) {
                   selectedAssigneesId = checkValidString(taskListData.userAssignTo!.userId);
-                  for (var n = 0; n < listDepartmentWiseUserList.length; n++)
-                  {
-                    if (listDepartmentWiseUserList[n].id == selectedAssigneesId)
-                    {
+                  for (var n = 0; n < listDepartmentWiseUserList.length; n++) {
+                    if (listDepartmentWiseUserList[n].id == selectedAssigneesId) {
                       listDepartmentWiseUserListSelected.add(listDepartmentWiseUserList[n]);
                     }
                   }
@@ -1138,7 +1169,7 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
         'description': _descriptionController.text.toString().trim(),
         'due_date': selectedDateFinal.isNotEmpty ? getTimeStampDate(selectedDateFinal.trim(), "dd MMM, yyyy hh:mm a").toString() : "",
         'priority_id': selectedPriorityId,
-        'task_id' : checkValidString(taskListData.id),
+        'task_id': checkValidString(taskListData.id),
         'user_id_assign': selectedAssigneesId.isNotEmpty ? selectedAssigneesId : "",
         'sub_description': _subDescriptionController.text.toString().trim(),
         'task_tags_array': selectedTags,
@@ -1155,7 +1186,7 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
       if (statusCode == 200 && dataResponse.success == 1) {
         try {
           showSnackBar(dataResponse.message, context);
-          Navigator.pop(context, "success");
+          isReloadList = "success";
         } catch (e) {
           print(e);
         }
@@ -1171,6 +1202,54 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
     }
   }
 
+  _getTaskDetailsDataFromAPI() async {
+    if (isOnline) {
+      setState(() {
+        _isLoading = true;
+      });
+      HttpWithMiddleware http = HttpWithMiddleware.build(middlewares: [
+        HttpLogger(logLevel: LogLevel.BODY),
+      ]);
+
+      final url = Uri.parse(API_URL + taskList);
+      Map<String, String> jsonBody = {
+        'logged_in_user_id': sessionManager.getId().toString(),
+        'from_app': IS_FROM_APP,
+        'call_app': CALL_APP,
+        'task_id': checkValidString(taskListData.id)
+      };
+
+      final response = await http.post(url, body: jsonBody, headers: {
+        "Authorization": API_Token,
+      });
+
+      final statusCode = response.statusCode;
+      final body = response.body;
+      Map<String, dynamic> apiData = jsonDecode(body);
+      var dataResponse = TaskListResponseModel.fromJson(apiData);
+      if (statusCode == 200 && dataResponse.success == 1) {
+        try {
+          if (dataResponse.data != null) {
+            if (dataResponse.data!.isNotEmpty) {
+              setState(() {
+                taskListData = dataResponse.data![0];
+              });
+            }
+          }
+        } catch (e) {
+          print(e);
+        }
+      } else {
+        showSnackBar(dataResponse.message, context);
+      }
+    } else {
+      noInterNet(context);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   void castStatefulWidget() {
@@ -1186,13 +1265,13 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
       _descriptionController.text = checkValidString(taskListData.description);
     }
 
-    if (taskListData.createdAtDateTime != null) {
-      if (taskListData.createdAtDateTime!.date != null) {
-        _taskDueDateController.text = checkValidString(taskListData.createdAtDateTime!.date);
+    if (taskListData.dueDateTime != null) {
+      if (taskListData.dueDateTime!.date != null) {
+        _taskDueDateController.text = checkValidString(taskListData.dueDateTime!.date);
       }
 
-      if (taskListData.createdAtDateTime!.time != null) {
-        _taskDueTimeController.text = checkValidString(taskListData.createdAtDateTime!.time);
+      if (taskListData.dueDateTime!.time != null) {
+        _taskDueTimeController.text = checkValidString(taskListData.dueDateTime!.time);
       }
     }
 
@@ -1216,7 +1295,5 @@ class _TaskDetailPageState extends BaseState<TaskDetailPage> {
     if (taskListData.tagsArray != null) {
       listTags = taskListData.tagsArray!;
     }
-
-
   }
 }

@@ -3,10 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:loop_page_view/loop_page_view.dart';
 
-import '../constant/colors.dart';
-import '../data/model/birthday_model.dart';
-import '../data/staticdata.dart';
-import '../utils/app_utils.dart';
+import '../../constant/colors.dart';
+import '../../model/birthday/birthday_model.dart';
+import '../../constant/staticdata.dart';
+import '../../utils/app_utils.dart';
 
 class BirthDayScreen extends StatefulWidget {
   const BirthDayScreen({super.key});

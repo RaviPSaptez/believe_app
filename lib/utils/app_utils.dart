@@ -424,6 +424,7 @@ showToast(String? message, BuildContext? context) {
 }
 
 startActivity(BuildContext context, Widget screen) {
+  hideKeyboard(context);
   Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: screen));
 }
 

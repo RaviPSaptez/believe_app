@@ -8,14 +8,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import '../constant/api_end_point.dart';
-import '../constant/colors.dart';
-import '../data/model/event_news_model.dart';
-import '../data/model/event_type_model.dart';
-import '../model/BasicResponseModel.dart';
-import '../utils/app_utils.dart';
-import '../utils/base_class.dart';
-import '../widget/loading.dart';
+import '../../constant/api_end_point.dart';
+import '../../constant/colors.dart';
+import '../../model/eventnews/event_news_model.dart';
+import '../../model/eventnews/event_type_model.dart';
+import '../../model/other/BasicResponseModel.dart';
+import '../../utils/app_utils.dart';
+import '../../utils/base_class.dart';
+import '../../widget/loading.dart';
 
 class AddEventScreen extends StatefulWidget {
   bool isFrom;

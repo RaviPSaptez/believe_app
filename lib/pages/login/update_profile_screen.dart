@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../../constant/colors.dart';
-import '../../data/model/profile_models.dart';
+import '../../model/login/profile_models.dart';
 import '../../utils/base_class.dart';
 
 class UpdateProfileScreen extends StatefulWidget {

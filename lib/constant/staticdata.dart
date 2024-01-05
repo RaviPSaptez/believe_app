@@ -1,18 +1,18 @@
 // import 'package:believe_intl/my_leaves_screen.dart';
-import 'package:believe_app/pages/blank_page.dart';
+import 'package:believe_app/pages/other/blank_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../pages/apply_leave.dart';
-import '../pages/birthdays_screen.dart';
-import '../pages/blank_page_new.dart';
-import '../pages/dashboard.dart';
-import '../pages/event_and_news_screen.dart';
+import '../pages/leave/apply_leave.dart';
+import '../pages/birthdays/birthdays_screen.dart';
+import '../pages/other/blank_page_new.dart';
+import '../pages/tabs/dashboard.dart';
+import '../pages/event_news/event_and_news_screen.dart';
 import '../pages/login/update_profile_screen.dart';
-import '../pages/my_leave_screen.dart';
-import '../pages/storage_screen.dart';
+import '../pages/leave/my_leave_screen.dart';
+import '../pages/storage/storage_screen.dart';
 import '../pages/task/my_task_list_screen.dart';
-import '../pages/transfer_request_screen.dart';
+import '../pages/other/transfer_request_screen.dart';
 
 
 
@@ -194,7 +194,7 @@ class QuickInfo {
         iconBackgroundColor: Colors.orange,
         screen: UpdateProfileScreen()
     ),
-    QuickInfo(
+  /*  QuickInfo(
         title: 'Locker-My Documents',
         description: 'Store all documents at one place',
         svgPath: 'assets/svgs/Locker.svg',
@@ -217,7 +217,7 @@ class QuickInfo {
         description: 'Track your tranfer application',
         svgPath: 'assets/svgs/EmployeeTransfer.svg',
         iconBackgroundColor: Colors.red[600],
-        screen: TranferRequestScreen())
+        screen: TranferRequestScreen())*/
   ];
 }
 
@@ -259,7 +259,7 @@ class ActivityData {
         description: 'Check Events / Meetings here',
         svgPath: 'assets/svgs/Events.svg',
         iconBackgroundColor: Colors.pink,
-        screen: const EventScreen()),
+        screen: EventScreen()),
     ActivityData(
         title: 'Birthday Reminders',
         description: 'Find Collegue\'s upcoming birthdays',
